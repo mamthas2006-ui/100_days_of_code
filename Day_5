@@ -1,0 +1,49 @@
+public class EvenOdd {
+    public static void main(String[] args) {
+
+        int number = 10;
+
+        if (number % 2 == 0) {
+            System.out.println("Even Number");
+        } else {
+            System.out.println("Odd Number");
+        }
+    }
+}
+public class Biggest {
+    public static void main(String[] args) {
+
+        int a = 20;
+        int b = 15;
+
+        if (a > b) {
+            System.out.println("A is Bigger");
+        } else {
+            System.out.println("B is Bigger");
+        }
+    }
+}
+public class PassFail {
+    public static void main(String[] args) {
+
+        int mark = 65;
+
+        if (mark >= 35) {
+            System.out.println("Pass");
+        } else {
+            System.out.println("Fail");
+        }
+    }
+}
+public class PositiveNegative {
+    public static void main(String[] args) {
+
+        int number = -5;
+
+        if (number >= 0) {
+            System.out.println("Positive Number");
+        } else {
+            System.out.println("Negative Number");
+        }
+    }
+}
