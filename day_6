@@ -1,0 +1,40 @@
+public class GradeChecker {
+    public static void main(String[] args) {
+
+        int mark = 85;
+
+        if (mark >= 90) {
+            System.out.println("Grade A");
+        } else if (mark >= 75) {
+            System.out.println("Grade B");
+        } else if (mark >= 50) {
+            System.out.println("Grade C");
+        } else {
+            System.out.println("Fail");
+        }
+    }
+}
+public class Voting {
+    public static void main(String[] args) {
+
+        int age = 20;
+
+        if (age >= 18) {
+            System.out.println("Eligible to Vote");
+        } else {
+            System.out.println("Not Eligible");
+        }
+    }
+}
+public class Voting {
+    public static void main(String[] args) {
+
+        int age = 20;
+
+        if (age >= 18) {
+            System.out.println("Eligible to Vote");
+        } else {
+            System.out.println("Not Eligible");
+        }
+    }
+}
