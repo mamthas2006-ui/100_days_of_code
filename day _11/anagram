@@ -1,0 +1,23 @@
+import java.util.Scanner;
+import java.util.Arrays;
+
+public class demo {
+    public static void main(String[] args) {
+        Scanner sol=new Scanner(System.in);
+       String s=sol.nextLine();
+       String t=sol.nextLine();
+       if(s.length()!=t.length()){
+        System.out.println("not valid");
+       }
+       char[]s1=s.toCharArray();
+       char[]s2=t.toCharArray();
+       Arrays.sort(s1);
+       Arrays.sort(s2);
+       if(Arrays.equals(s1,s2)){
+        System.out.println("Anagram");
+       }
+       else{
+        System.out.println("not an anagram");
+       }
+       }
+    }
