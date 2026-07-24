@@ -1,0 +1,101 @@
+Maximum Sum Subarray of Size K
+
+Input:
+
+arr = {2,1,5,1,3,2}
+k = 3
+
+Output:
+
+9
+
+(5 + 1 + 3)
+
+Code
+public class MaximumSumSubarray {
+
+    public static void main(String[] args) {
+
+        int[] arr = {2,1,5,1,3,2};
+        int k = 3;
+
+        int maxSum = 0;
+        int windowSum = 0;
+
+        for(int i = 0; i < k; i++) {
+            windowSum += arr[i];
+        }
+
+        maxSum = windowSum;
+
+        for(int i = k; i < arr.length; i++) {
+            windowSum += arr[i] - arr[i-k];
+            maxSum = Math.max(maxSum, windowSum);
+        }
+
+        System.out.println(maxSum);
+    }
+}
+
+Output:
+
+9
+2️ Max Consecutive Ones
+public class MaxConsecutiveOnes {
+
+    public static void main(String[] args) {
+
+        int[] nums = {1,1,0,1,1,1};
+
+        int count = 0;
+        int max = 0;
+
+        for(int num : nums){
+
+            if(num == 1){
+                count++;
+                max = Math.max(max, count);
+            }
+            else{
+                count = 0;
+            }
+        }
+
+        System.out.println(max);
+    }
+}
+
+Output:
+
+3
+3️ Contains Duplicate
+import java.util.HashSet;
+
+public class ContainsDuplicate {
+
+    public static void main(String[] args) {
+
+        int[] nums = {1,2,3,1};
+
+        HashSet<Integer> set = new HashSet<>();
+
+        for(int num : nums){
+
+            if(set.contains(num)){
+                System.out.println(true);
+                return;
+            }
+
+            set.add(num);
+        }
+
+        System.out.println(false);
+    }
+}
+
+Output:
+
+
+
+
+Day 20: Learned Sliding Window and Solved Array Problems
