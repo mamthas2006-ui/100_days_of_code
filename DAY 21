@@ -1,0 +1,66 @@
+Factorial Using Recursion
+public class Factorial {
+
+    static int factorial(int n) {
+
+        if (n == 1) {
+            return 1;
+        }
+
+        return n * factorial(n - 1);
+    }
+
+    public static void main(String[] args) {
+
+        System.out.println(factorial(5));
+    }
+}
+Output
+120
+🧒 Dry Run
+factorial(5)
+= 5 * factorial(4)
+= 5 * 4 * factorial(3)
+= 5 * 4 * 3 * factorial(2)
+= 5 * 4 * 3 * 2 * factorial(1)
+= 120
+2️⃣ Fibonacci Using Recursion
+public class Fibonacci {
+
+    static int fib(int n) {
+
+        if (n <= 1) {
+            return n;
+        }
+
+        return fib(n - 1) + fib(n - 2);
+    }
+
+    public static void main(String[] args) {
+
+        for (int i = 0; i < 6; i++) {
+            System.out.print(fib(i) + " ");
+        }
+    }
+}
+Output
+0 1 1 2 3 5
+3️⃣ Sum of N Numbers
+public class SumOfNumbers {
+
+    static int sum(int n) {
+
+        if (n == 0) {
+            return 0;
+        }
+
+        return n + sum(n - 1);
+    }
+
+    public static void main(String[] args) {
+
+        System.out.println(sum(5));
+    }
+}
+Output
+15
