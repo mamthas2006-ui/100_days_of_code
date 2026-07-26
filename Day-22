@@ -1,0 +1,67 @@
+1️⃣ Palindrome Using Recursion
+public class PalindromeRecursion {
+
+    static boolean isPalindrome(String str, int start, int end) {
+
+        if (start >= end) {
+            return true;
+        }
+
+        if (str.charAt(start) != str.charAt(end)) {
+            return false;
+        }
+
+        return isPalindrome(str, start + 1, end - 1);
+    }
+
+    public static void main(String[] args) {
+
+        String str = "madam";
+
+        System.out.println(
+            isPalindrome(str, 0, str.length() - 1)
+        );
+    }
+}
+Output
+true
+2️⃣ Reverse String Using Recursion
+public class ReverseStringRecursion {
+
+    static void reverse(String str) {
+
+        if (str.length() == 0) {
+            return;
+        }
+
+        System.out.print(str.charAt(str.length() - 1));
+
+        reverse(str.substring(0, str.length() - 1));
+    }
+
+    public static void main(String[] args) {
+
+        reverse("Java");
+    }
+}
+Output
+avaJ
+3️⃣ Power of Number
+public class PowerOfNumber {
+
+    static int power(int a, int b) {
+
+        if (b == 0) {
+            return 1;
+        }
+
+        return a * power(a, b - 1);
+    }
+
+    public static void main(String[] args) {
+
+        System.out.println(power(2, 4));
+    }
+}
+Output
+16
