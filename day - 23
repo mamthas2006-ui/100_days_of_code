@@ -1,0 +1,101 @@
+1️⃣ Valid Parentheses
+import java.util.Stack;
+
+public class ValidParentheses {
+
+    public static void main(String[] args) {
+
+        String str = "()[]{}";
+
+        Stack<Character> stack = new Stack<>();
+
+        for (char ch : str.toCharArray()) {
+
+            if (ch == '(' || ch == '[' || ch == '{') {
+                stack.push(ch);
+            } else {
+
+                if (stack.isEmpty()) {
+                    System.out.println(false);
+                    return;
+                }
+
+                char top = stack.pop();
+
+                if ((ch == ')' && top != '(') ||
+                    (ch == ']' && top != '[') ||
+                    (ch == '}' && top != '{')) {
+
+                    System.out.println(false);
+                    return;
+                }
+            }
+        }
+
+        System.out.println(stack.isEmpty());
+    }
+}
+Output
+true
+2️⃣ Next Greater Element
+import java.util.Stack;
+
+public class NextGreaterElement {
+
+    public static void main(String[] args) {
+
+        int[] nums = {2, 1, 2, 4, 3};
+
+        int[] result = new int[nums.length];
+
+        Stack<Integer> stack = new Stack<>();
+
+        for (int i = nums.length - 1; i >= 0; i--) {
+
+            while (!stack.isEmpty() && stack.peek() <= nums[i]) {
+                stack.pop();
+            }
+
+            result[i] = stack.isEmpty() ? -1 : stack.peek();
+
+            stack.push(nums[i]);
+        }
+
+        for (int num : result) {
+            System.out.print(num + " ");
+        }
+    }
+}
+Output
+4 2 4 -1 -1
+3️⃣ Remove Adjacent Duplicates
+import java.util.Stack;
+
+public class RemoveDuplicates {
+
+    public static void main(String[] args) {
+
+        String str = "abbaca";
+
+        Stack<Character> stack = new Stack<>();
+
+        for (char ch : str.toCharArray()) {
+
+            if (!stack.isEmpty() && stack.peek() == ch) {
+                stack.pop();
+            } else {
+                stack.push(ch);
+            }
+        }
+
+        StringBuilder result = new StringBuilder();
+
+        for (char ch : stack) {
+            result.append(ch);
+        }
+
+        System.out.println(result);
+    }
+}
+Output
+ca
