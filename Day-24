@@ -1,0 +1,62 @@
+Queue Operations
+import java.util.LinkedList;
+import java.util.Queue;
+
+public class QueueOperations {
+
+    public static void main(String[] args) {
+
+        Queue<Integer> queue = new LinkedList<>();
+
+        queue.offer(10);
+        queue.offer(20);
+        queue.offer(30);
+
+        System.out.println(queue);
+
+        queue.poll();
+
+        System.out.println(queue);
+    }
+}
+Output
+[10, 20, 30]
+[20, 30]
+2️⃣ Implement Queue Using Array
+public class ImplementQueue {
+
+    public static void main(String[] args) {
+
+        int[] queue = new int[5];
+
+        int rear = -1;
+
+        queue[++rear] = 10;
+        queue[++rear] = 20;
+        queue[++rear] = 30;
+
+        for (int i = 0; i <= rear; i++) {
+            System.out.print(queue[i] + " ");
+        }
+    }
+}
+Output
+10 20 30
+3️⃣ Circular Queue Concept
+public class CircularQueue {
+
+    public static void main(String[] args) {
+
+        int size = 5;
+
+        for (int i = 0; i < 10; i++) {
+            System.out.print(i % size + " ");
+        }
+    }
+}
+Output
+0 1 2 3 4 0 1 2 3 4
+
+
+
+
