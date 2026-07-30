@@ -1,0 +1,63 @@
+1️⃣ Singly Linked List
+class Node {
+    int data;
+    Node next;
+
+    Node(int data) {
+        this.data = data;
+        this.next = null;
+    }
+}
+
+public class SinglyLinkedList {
+
+    public static void main(String[] args) {
+
+        Node first = new Node(10);
+        Node second = new Node(20);
+        Node third = new Node(30);
+
+        first.next = second;
+        second.next = third;
+
+        Node temp = first;
+
+        while (temp != null) {
+            System.out.print(temp.data + " ");
+            temp = temp.next;
+        }
+    }
+}
+Output
+10 20 30
+2️⃣ Reverse Linked List
+public class ReverseLinkedList {
+
+    public static void main(String[] args) {
+
+        int[] arr = {10, 20, 30};
+
+        for (int i = arr.length - 1; i >= 0; i--) {
+            System.out.print(arr[i] + " ");
+        }
+    }
+}
+Output
+30 20 10
+
+Note: Actual Linked List reversal uses pointers. We'll learn that later.
+
+3️⃣ Middle of Linked List
+public class MiddleOfLinkedList {
+
+    public static void main(String[] args) {
+
+        int[] arr = {10, 20, 30, 40, 50};
+
+        int middle = arr.length / 2;
+
+        System.out.println(arr[middle]);
+    }
+}
+Output
+30
