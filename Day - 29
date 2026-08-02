@@ -1,0 +1,98 @@
+1️⃣ Valid Palindrome (LeetCode 125)
+Problem
+
+Input:
+
+"A man, a plan, a canal: Panama"
+
+Output:
+
+true
+Code
+public class ValidPalindrome {
+
+    public static void main(String[] args) {
+
+        String s = "A man, a plan, a canal: Panama";
+
+        s = s.toLowerCase().replaceAll("[^a-z0-9]", "");
+
+        int left = 0;
+        int right = s.length() - 1;
+
+        while (left < right) {
+
+            if (s.charAt(left) != s.charAt(right)) {
+                System.out.println(false);
+                return;
+            }
+
+            left++;
+            right--;
+        }
+
+        System.out.println(true);
+    }
+}
+2️⃣ Merge Strings Alternately (LeetCode 1768)
+Input
+abc
+pqr
+
+Output
+
+apbqcr
+Code
+public class MergeStringsAlternately {
+
+    public static void main(String[] args) {
+
+        String word1 = "abc";
+        String word2 = "pqr";
+
+        StringBuilder result = new StringBuilder();
+
+        int i = 0;
+
+        while (i < word1.length() || i < word2.length()) {
+
+            if (i < word1.length())
+                result.append(word1.charAt(i));
+
+            if (i < word2.length())
+                result.append(word2.charAt(i));
+
+            i++;
+        }
+
+        System.out.println(result);
+    }
+}
+3️⃣ Longest Common Prefix (Optimized)
+public class LongestCommonPrefix {
+
+    public static void main(String[] args) {
+
+        String[] strs = {"flower", "flow", "flight"};
+
+        if (strs.length == 0) {
+            System.out.println("");
+            return;
+        }
+
+        String prefix = strs[0];
+
+        for (int i = 1; i < strs.length; i++) {
+
+            while (!strs[i].startsWith(prefix)) {
+                prefix = prefix.substring(0, prefix.length() - 1);
+            }
+        }
+
+        System.out.println(prefix);
+    }
+}
+
+Output:
+
+fl
