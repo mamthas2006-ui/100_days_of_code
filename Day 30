@@ -1,0 +1,92 @@
+1️⃣ Roman to Integer (LeetCode 13)
+Code
+import java.util.HashMap;
+
+public class RomanToInteger {
+
+    public static void main(String[] args) {
+
+        String s = "MCMXCIV";
+
+        HashMap<Character, Integer> map = new HashMap<>();
+
+        map.put('I', 1);
+        map.put('V', 5);
+        map.put('X', 10);
+        map.put('L', 50);
+        map.put('C', 100);
+        map.put('D', 500);
+        map.put('M', 1000);
+
+        int result = 0;
+
+        for (int i = 0; i < s.length(); i++) {
+
+            if (i < s.length() - 1 &&
+                    map.get(s.charAt(i)) < map.get(s.charAt(i + 1))) {
+
+                result -= map.get(s.charAt(i));
+
+            } else {
+
+                result += map.get(s.charAt(i));
+            }
+        }
+
+        System.out.println(result);
+    }
+}
+Output
+1994
+2️⃣ Is Subsequence (LeetCode 392)
+Code
+public class IsSubsequence {
+
+    public static void main(String[] args) {
+
+        String s = "abc";
+        String t = "ahbgdc";
+
+        int i = 0;
+        int j = 0;
+
+        while (i < s.length() && j < t.length()) {
+
+            if (s.charAt(i) == t.charAt(j)) {
+                i++;
+            }
+
+            j++;
+        }
+
+        System.out.println(i == s.length());
+    }
+}
+Output
+true
+3️⃣ Length of Last Word (LeetCode 58)
+Code
+public class LengthOfLastWord {
+
+    public static void main(String[] args) {
+
+        String s = "Hello World";
+
+        s = s.trim();
+
+        int count = 0;
+
+        for (int i = s.length() - 1; i >= 0; i--) {
+
+            if (s.charAt(i) == ' ') {
+                break;
+            }
+
+            count++;
+        }
+
+        System.out.println(count);
+    }
+}
+Output
+5
