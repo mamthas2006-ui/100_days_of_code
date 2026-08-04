@@ -1,0 +1,123 @@
+1️⃣ Container With Most Water (LeetCode 11) ⭐⭐⭐
+public class ContainerWithMostWater {
+
+    public static void main(String[] args) {
+
+        int[] height = {1,8,6,2,5,4,8,3,7};
+
+        int left = 0;
+        int right = height.length - 1;
+        int maxArea = 0;
+
+        while (left < right) {
+
+            int area = Math.min(height[left], height[right]) * (right - left);
+            maxArea = Math.max(maxArea, area);
+
+            if (height[left] < height[right]) {
+                left++;
+            } else {
+                right--;
+            }
+        }
+
+        System.out.println(maxArea);
+    }
+}
+
+Output
+
+49
+
+Time Complexity: O(n)
+
+2️⃣ Sort Colors (LeetCode 75) ⭐⭐⭐
+import java.util.Arrays;
+
+public class SortColors {
+
+    public static void main(String[] args) {
+
+        int[] nums = {2,0,2,1,1,0};
+
+        int low = 0;
+        int mid = 0;
+        int high = nums.length - 1;
+
+        while (mid <= high) {
+
+            if (nums[mid] == 0) {
+                int temp = nums[low];
+                nums[low] = nums[mid];
+                nums[mid] = temp;
+                low++;
+                mid++;
+            } else if (nums[mid] == 1) {
+                mid++;
+            } else {
+                int temp = nums[mid];
+                nums[mid] = nums[high];
+                nums[high] = temp;
+                high--;
+            }
+        }
+
+        System.out.println(Arrays.toString(nums));
+    }
+}
+
+Output
+
+[0, 0, 1, 1, 2, 2]
+
+Time Complexity: O(n)
+
+3️⃣ 3Sum (LeetCode 15) ⭐⭐⭐⭐
+import java.util.*;
+
+public class ThreeSum {
+
+    public static void main(String[] args) {
+
+        int[] nums = {-1,0,1,2,-1,-4};
+
+        Arrays.sort(nums);
+
+        List<List<Integer>> result = new ArrayList<>();
+
+        for (int i = 0; i < nums.length - 2; i++) {
+
+            if (i > 0 && nums[i] == nums[i - 1]) continue;
+
+            int left = i + 1;
+            int right = nums.length - 1;
+
+            while (left < right) {
+
+                int sum = nums[i] + nums[left] + nums[right];
+
+                if (sum == 0) {
+
+                    result.add(Arrays.asList(nums[i], nums[left], nums[right]));
+
+                    while (left < right && nums[left] == nums[left + 1]) left++;
+                    while (left < right && nums[right] == nums[right - 1]) right--;
+
+                    left++;
+                    right--;
+
+                } else if (sum < 0) {
+                    left++;
+                } else {
+                    right--;
+                }
+            }
+        }
+
+        System.out.println(result);
+    }
+}
+
+Output
+
+[[-1, -1, 2], [-1, 0, 1]]
