@@ -1,0 +1,80 @@
+1️⃣ Two Sum (LeetCode 1)
+import java.util.HashMap;
+
+public class TwoSum {
+
+    public static void main(String[] args) {
+
+        int[] nums = {2, 7, 11, 15};
+        int target = 9;
+
+        HashMap<Integer, Integer> map = new HashMap<>();
+
+        for (int i = 0; i < nums.length; i++) {
+
+            int complement = target - nums[i];
+
+            if (map.containsKey(complement)) {
+                System.out.println("[" + map.get(complement) + ", " + i + "]");
+                return;
+            }
+
+            map.put(nums[i], i);
+        }
+    }
+}
+Output
+[0, 1]
+
+Time Complexity: O(n)
+
+2️⃣ Contains Duplicate (LeetCode 217)
+import java.util.HashSet;
+
+public class ContainsDuplicate {
+
+    public static void main(String[] args) {
+
+        int[] nums = {1, 2, 3, 1};
+
+        HashSet<Integer> set = new HashSet<>();
+
+        for (int num : nums) {
+
+            if (set.contains(num)) {
+                System.out.println(true);
+                return;
+            }
+
+            set.add(num);
+        }
+
+        System.out.println(false);
+    }
+}
+Output
+true
+
+Time Complexity: O(n)
+
+3️⃣ Valid Anagram (LeetCode 242)
+import java.util.Arrays;
+
+public class ValidAnagram {
+
+    public static void main(String[] args) {
+
+        String s = "anagram";
+        String t = "nagaram";
+
+        char[] a = s.toCharArray();
+        char[] b = t.toCharArray();
+
+        Arrays.sort(a);
+        Arrays.sort(b);
+
+        System.out.println(Arrays.equals(a, b));
+    }
+}
+Output
+true
