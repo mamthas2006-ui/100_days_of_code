@@ -1,0 +1,75 @@
+1️⃣ Reverse Linked List — LeetCode #206 ⭐⭐⭐
+class Solution {
+    public ListNode reverseList(ListNode head) {
+
+        ListNode prev = null;
+        ListNode current = head;
+
+        while (current != null) {
+
+            ListNode next = current.next;
+
+            current.next = prev;
+
+            prev = current;
+            current = next;
+        }
+
+        return prev;
+    }
+}
+
+Time: O(n)
+Space: O(1) ✅
+
+2️⃣ Middle of the Linked List — LeetCode #876
+class Solution {
+    public ListNode middleNode(ListNode head) {
+
+        ListNode slow = head;
+        ListNode fast = head;
+
+        while (fast != null && fast.next != null) {
+
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+
+        return slow;
+    }
+}
+🧠 Trick
+slow → 1 step
+fast → 2 steps
+
+Fast reaches the end → slow is at the middle.
+
+3️⃣ Merge Two Sorted Lists — LeetCode #21 ⭐⭐⭐
+class Solution {
+    public ListNode mergeTwoLists(ListNode list1, ListNode list2) {
+
+        ListNode dummy = new ListNode(0);
+        ListNode current = dummy;
+
+        while (list1 != null && list2 != null) {
+
+            if (list1.val <= list2.val) {
+                current.next = list1;
+                list1 = list1.next;
+            } else {
+                current.next = list2;
+                list2 = list2.next;
+            }
+
+            current = current.next;
+        }
+
+        if (list1 != null) {
+            current.next = list1;
+        } else {
+            current.next = list2;
+        }
+
+        return dummy.next;
+    }
+}
