@@ -1,0 +1,85 @@
+1️⃣ Binary Tree Inorder Traversal — LeetCode #94
+
+Order: Left → Root → Right
+
+import java.util.*;
+
+class Solution {
+    public List<Integer> inorderTraversal(TreeNode root) {
+
+        List<Integer> result = new ArrayList<>();
+
+        inorder(root, result);
+
+        return result;
+    }
+
+    private void inorder(TreeNode root, List<Integer> result) {
+
+        if (root == null) {
+            return;
+        }
+
+        inorder(root.left, result);
+
+        result.add(root.val);
+
+        inorder(root.right, result);
+    }
+}
+2️⃣ Binary Tree Preorder Traversal — LeetCode #144
+
+Order: Root → Left → Right
+
+import java.util.*;
+
+class Solution {
+    public List<Integer> preorderTraversal(TreeNode root) {
+
+        List<Integer> result = new ArrayList<>();
+
+        preorder(root, result);
+
+        return result;
+    }
+
+    private void preorder(TreeNode root, List<Integer> result) {
+
+        if (root == null) {
+            return;
+        }
+
+        result.add(root.val);
+
+        preorder(root.left, result);
+        preorder(root.right, result);
+    }
+}
+3️⃣ Binary Tree Postorder Traversal — LeetCode #145
+
+Order: Left → Right → Root
+
+import java.util.*;
+
+class Solution {
+    public List<Integer> postorderTraversal(TreeNode root) {
+
+        List<Integer> result = new ArrayList<>();
+
+        postorder(root, result);
+
+        return result;
+    }
+
+    private void postorder(TreeNode root, List<Integer> result) {
+
+        if (root == null) {
+            return;
+        }
+
+        postorder(root.left, result);
+        postorder(root.right, result);
+
+        result.add(root.val);
+    }
+}
