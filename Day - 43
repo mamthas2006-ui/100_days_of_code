@@ -1,0 +1,77 @@
+1️⃣ Search in a Binary Search Tree — LeetCode #700
+class Solution {
+    public TreeNode searchBST(TreeNode root, int val) {
+
+
+        if (root == null || root.val == val) {
+            return root;
+        }
+
+
+        if (val < root.val) {
+            return searchBST(root.left, val);
+        }
+
+
+        return searchBST(root.right, val);
+    }
+}
+🧠 BST Rule
+Left  < Root < Right
+
+So target smaller-na → left
+
+Target bigger-na → right
+
+2️⃣ Insert into a Binary Search Tree — LeetCode #701
+class Solution {
+    public TreeNode insertIntoBST(TreeNode root, int val) {
+
+
+        if (root == null) {
+            return new TreeNode(val);
+        }
+
+
+        if (val < root.val) {
+            root.left = insertIntoBST(root.left, val);
+        } else {
+            root.right = insertIntoBST(root.right, val);
+        }
+
+
+        return root;
+    }
+}
+3️⃣ Validate Binary Search Tree — LeetCode #98 ⭐⭐⭐
+class Solution {
+
+
+    public boolean isValidBST(TreeNode root) {
+        return validate(root, Long.MIN_VALUE, Long.MAX_VALUE);
+    }
+
+
+    private boolean validate(TreeNode root, long min, long max) {
+
+
+        if (root == null) {
+            return true;
+        }
+
+
+        if (root.val <= min || root.val >= max) {
+            return false;
+        }
+
+
+        return validate(root.left, min, root.val)
+            && validate(root.right, root.val, max);
+    }
+}
+Example
+       5
+      / \
+     3   7
+    / \   \
+   2   4   8
