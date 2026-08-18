@@ -1,0 +1,127 @@
+1️⃣ Longest Common Subsequence — LeetCode #1143 ⭐⭐⭐
+class Solution {
+    public int longestCommonSubsequence(String text1, String text2) {
+
+
+        int m = text1.length();
+        int n = text2.length();
+
+
+        int[][] dp = new int[m + 1][n + 1];
+
+
+        for (int i = 1; i <= m; i++) {
+            for (int j = 1; j <= n; j++) {
+
+
+                if (text1.charAt(i - 1) == text2.charAt(j - 1)) {
+                    dp[i][j] = dp[i - 1][j - 1] + 1;
+                } else {
+                    dp[i][j] = Math.max(
+                        dp[i - 1][j],
+                        dp[i][j - 1]
+                    );
+                }
+            }
+        }
+
+
+        return dp[m][n];
+    }
+}
+
+Example:
+
+text1 = "abcde"
+text2 = "ace"
+
+
+Output = 3
+2️⃣ Word Break — LeetCode #139 ⭐⭐⭐
+import java.util.*;
+
+
+class Solution {
+    public boolean wordBreak(String s, List<String> wordDict) {
+
+
+        Set<String> words = new HashSet<>(wordDict);
+
+
+        boolean[] dp = new boolean[s.length() + 1];
+        dp[0] = true;
+
+
+        for (int i = 1; i <= s.length(); i++) {
+
+
+            for (int j = 0; j < i; j++) {
+
+
+                if (dp[j] && words.contains(s.substring(j, i))) {
+                    dp[i] = true;
+                    break;
+                }
+            }
+        }
+
+
+        return dp[s.length()];
+    }
+}
+
+Example:
+
+s = "leetcode"
+wordDict = ["leet","code"]
+
+
+Output = true
+3️⃣ Longest Increasing Subsequence — LeetCode #300 ⭐⭐⭐
+class Solution {
+    public int lengthOfLIS(int[] nums) {
+
+
+        int n = nums.length;
+        int[] dp = new int[n];
+
+
+        int answer = 0;
+
+
+        for (int i = 0; i < n; i++) {
+
+
+            dp[i] = 1;
+
+
+            for (int j = 0; j < i; j++) {
+
+
+                if (nums[j] < nums[i]) {
+                    dp[i] = Math.max(
+                        dp[i],
+                        dp[j] + 1
+                    );
+                }
+            }
+
+
+            answer = Math.max(answer, dp[i]);
+        }
+
+
+        return answer;
+    }
+}
+
+Example:
+
+nums = [10,9,2,5,3,7,101,18]
+
+
+Output = 4
+
+One LIS:
+
+[2,3,7,101]
