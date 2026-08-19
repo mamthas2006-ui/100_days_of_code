@@ -1,0 +1,109 @@
+1️⃣ Find if Path Exists in Graph — LeetCode #1971 ⭐
+import java.util.*;
+
+
+class Solution {
+    public boolean validPath(
+        int n,
+        int[][] edges,
+        int source,
+        int destination
+    ) {
+
+
+        List<List<Integer>> graph = new ArrayList<>();
+
+
+        for (int i = 0; i < n; i++) {
+            graph.add(new ArrayList<>());
+        }
+
+
+        for (int[] edge : edges) {
+            graph.get(edge[0]).add(edge[1]);
+            graph.get(edge[1]).add(edge[0]);
+        }
+
+
+        boolean[] visited = new boolean[n];
+
+
+        Queue<Integer> queue = new LinkedList<>();
+        queue.offer(source);
+        visited[source] = true;
+
+
+        while (!queue.isEmpty()) {
+
+
+            int node = queue.poll();
+
+
+            if (node == destination) {
+                return true;
+            }
+
+
+            for (int next : graph.get(node)) {
+
+
+                if (!visited[next]) {
+                    visited[next] = true;
+                    queue.offer(next);
+                }
+            }
+        }
+
+
+        return false;
+    }
+}
+
+Time: O(V + E)
+Space: O(V + E)
+
+2️⃣ Number of Provinces — LeetCode #547 ⭐⭐
+class Solution {
+    public int findCircleNum(int[][] isConnected) {
+
+
+        int n = isConnected.length;
+        boolean[] visited = new boolean[n];
+
+
+        int provinces = 0;
+
+
+        for (int i = 0; i < n; i++) {
+
+
+            if (!visited[i]) {
+                provinces++;
+                dfs(isConnected, visited, i);
+            }
+        }
+
+
+        return provinces;
+    }
+
+
+    private void dfs(
+        int[][] graph,
+        boolean[] visited,
+        int node
+    ) {
+
+
+        visited[node] = true;
+
+
+        for (int i = 0; i < graph.length; i++) {
+
+
+            if (graph[node][i] == 1 && !visited[i]) {
+                dfs(graph, visited, i);
+            }
+        }
+    }
+}
