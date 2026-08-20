@@ -1,0 +1,195 @@
+1️⃣ Flood Fill — LeetCode #733 ⭐
+class Solution {
+
+
+    public int[][] floodFill(int[][] image, int sr, int sc, int color) {
+
+
+        int original = image[sr][sc];
+
+
+        if (original == color) {
+            return image;
+        }
+
+
+        dfs(image, sr, sc, original, color);
+
+
+        return image;
+    }
+
+
+    private void dfs(
+        int[][] image,
+        int row,
+        int col,
+        int original,
+        int color
+    ) {
+
+
+        if (row < 0 || row >= image.length ||
+            col < 0 || col >= image[0].length ||
+            image[row][col] != original) {
+            return;
+        }
+
+
+        image[row][col] = color;
+
+
+        dfs(image, row + 1, col, original, color);
+        dfs(image, row - 1, col, original, color);
+        dfs(image, row, col + 1, original, color);
+        dfs(image, row, col - 1, original, color);
+    }
+}
+
+Time: O(m × n)
+Space: O(m × n) worst case.
+
+2️⃣ Clone Graph — LeetCode #133 ⭐⭐⭐
+import java.util.*;
+
+
+class Solution {
+
+
+    private HashMap<Node, Node> map = new HashMap<>();
+
+
+    public Node cloneGraph(Node node) {
+
+
+        if (node == null) {
+            return null;
+        }
+
+
+        if (map.containsKey(node)) {
+            return map.get(node);
+        }
+
+
+        Node clone = new Node(node.val);
+        map.put(node, clone);
+
+
+        for (Node neighbor : node.neighbors) {
+            clone.neighbors.add(cloneGraph(neighbor));
+        }
+
+
+        return clone;
+    }
+}
+🧠 Main idea
+
+Original node → cloned node mapping:
+
+Original → Clone
+   1    →   1
+   2    →   2
+   3    →   3
+
+HashMap use pannradhu cycle avoid panna.
+
+3️⃣ Rotting Oranges — LeetCode #994 ⭐⭐⭐
+import java.util.*;
+
+
+class Solution {
+
+
+    public int orangesRotting(int[][] grid) {
+
+
+        int rows = grid.length;
+        int cols = grid[0].length;
+
+
+        Queue<int[]> queue = new LinkedList<>();
+
+
+        int fresh = 0;
+
+
+        for (int i = 0; i < rows; i++) {
+
+
+            for (int j = 0; j < cols; j++) {
+
+
+                if (grid[i][j] == 2) {
+                    queue.offer(new int[]{i, j});
+                }
+
+
+                if (grid[i][j] == 1) {
+                    fresh++;
+                }
+            }
+        }
+
+
+        int minutes = 0;
+
+
+        int[][] directions = {
+            {1, 0},
+            {-1, 0},
+            {0, 1},
+            {0, -1}
+        };
+
+
+        while (!queue.isEmpty() && fresh > 0) {
+
+
+            int size = queue.size();
+
+
+            for (int i = 0; i < size; i++) {
+
+
+                int[] current = queue.poll();
+
+
+                for (int[] direction : directions) {
+
+
+                    int row = current[0] + direction[0];
+                    int col = current[1] + direction[1];
+
+
+                    if (row >= 0 && row < rows &&
+                        col >= 0 && col < cols &&
+                        grid[row][col] == 1) {
+
+
+                        grid[row][col] = 2;
+                        fresh--;
+
+
+                        queue.offer(new int[]{row, col});
+                    }
+                }
+            }
+
+
+            minutes++;
+        }
+
+
+        return fresh == 0 ? minutes : -1;
+    }
+}
+🧠 Important
+
+Here BFS use pannuvom because each BFS level = 1 minute.
+
+Minute 0 → 🟠
+Minute 1 → 🟠 spreads
+Minute 2 → 🟠 spreads
+Minute 3 → 🟠 spreads
