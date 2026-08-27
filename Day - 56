@@ -1,0 +1,104 @@
+1️⃣ Maximum Average Subarray I — LeetCode #643
+class Solution {
+    public double findMaxAverage(int[] nums, int k) {
+
+        int sum = 0;
+
+        for (int i = 0; i < k; i++) {
+            sum += nums[i];
+        }
+
+        int maxSum = sum;
+
+        for (int i = k; i < nums.length; i++) {
+
+            sum += nums[i];
+            sum -= nums[i - k];
+
+            maxSum = Math.max(maxSum, sum);
+        }
+
+        return (double) maxSum / k;
+    }
+}
+
+Time: O(n)
+Space: O(1) ✅
+
+2️⃣ Longest Substring Without Repeating Characters — LeetCode #3 ⭐⭐⭐
+import java.util.*;
+
+class Solution {
+    public int lengthOfLongestSubstring(String s) {
+
+        HashSet<Character> set = new HashSet<>();
+
+        int left = 0;
+        int maxLength = 0;
+
+        for (int right = 0; right < s.length(); right++) {
+
+            while (set.contains(s.charAt(right))) {
+                set.remove(s.charAt(left));
+                left++;
+            }
+
+            set.add(s.charAt(right));
+
+            maxLength = Math.max(
+                maxLength,
+                right - left + 1
+            );
+        }
+
+        return maxLength;
+    }
+}
+
+Example:
+
+s = "abcabcbb"
+
+Output = 3
+
+"abc" → longest substring.
+
+Time: O(n)
+Space: O(n)
+
+3️⃣ Minimum Size Subarray Sum — LeetCode #209 ⭐⭐⭐
+class Solution {
+    public int minSubArrayLen(int target, int[] nums) {
+
+        int left = 0;
+        int sum = 0;
+        int minLength = Integer.MAX_VALUE;
+
+        for (int right = 0; right < nums.length; right++) {
+
+            sum += nums[right];
+
+            while (sum >= target) {
+
+                minLength = Math.min(
+                    minLength,
+                    right - left + 1
+                );
+
+                sum -= nums[left];
+                left++;
+            }
+        }
+
+        return minLength == Integer.MAX_VALUE
+            ? 0
+            : minLength;
+    }
+}
+
+Example:
+
+target = 7
+nums = [2,3,1,2,4,3]
+
+Output = 2
