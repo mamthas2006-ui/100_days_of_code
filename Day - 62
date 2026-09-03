@@ -1,0 +1,146 @@
+1️⃣ #207 — Course Schedule
+
+Medium
+
+class Solution {
+    public boolean canFinish(int numCourses, int[][] prerequisites) {
+        int[] indegree = new int[numCourses];
+        List<List<Integer>> graph = new ArrayList<>();
+
+        for (int i = 0; i < numCourses; i++)
+            graph.add(new ArrayList<>());
+
+        for (int[] p : prerequisites) {
+            graph.get(p[1]).add(p[0]);
+            indegree[p[0]]++;
+        }
+
+        Queue<Integer> q = new LinkedList<>();
+
+        for (int i = 0; i < numCourses; i++) {
+            if (indegree[i] == 0)
+                q.offer(i);
+        }
+
+        int count = 0;
+
+        while (!q.isEmpty()) {
+            int course = q.poll();
+            count++;
+
+            for (int next : graph.get(course)) {
+                indegree[next]--;
+
+                if (indegree[next] == 0)
+                    q.offer(next);
+            }
+        }
+
+        return count == numCourses;
+    }
+}
+
+Concept: Topological Sort + BFS
+Time: O(V + E)
+Space: O(V + E)
+
+2️⃣ #417 — Pacific Atlantic Water Flow
+
+Medium
+
+class Solution {
+    public List<List<Integer>> pacificAtlantic(int[][] heights) {
+        int m = heights.length;
+        int n = heights[0].length;
+
+        boolean[][] pacific = new boolean[m][n];
+        boolean[][] atlantic = new boolean[m][n];
+
+        for (int i = 0; i < m; i++) {
+            dfs(heights, pacific, i, 0);
+            dfs(heights, atlantic, i, n - 1);
+        }
+
+        for (int j = 0; j < n; j++) {
+            dfs(heights, pacific, 0, j);
+            dfs(heights, atlantic, m - 1, j);
+        }
+
+        List<List<Integer>> result = new ArrayList<>();
+
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if (pacific[i][j] && atlantic[i][j]) {
+                    result.add(Arrays.asList(i, j));
+                }
+            }
+        }
+
+        return result;
+    }
+
+    private void dfs(int[][] heights, boolean[][] visited, int r, int c) {
+        if (visited[r][c])
+            return;
+
+        visited[r][c] = true;
+
+        int[][] directions = {
+            {1, 0}, {-1, 0}, {0, 1}, {0, -1}
+        };
+
+        for (int[] d : directions) {
+            int nr = r + d[0];
+            int nc = c + d[1];
+
+            if (nr >= 0 && nr < heights.length &&
+                nc >= 0 && nc < heights[0].length &&
+                heights[nr][nc] >= heights[r][c]) {
+
+                dfs(heights, visited, nr, nc);
+            }
+        }
+    }
+}
+
+Main trick: Ocean → reverse direction-la DFS pannuvom.
+Time: O(m × n)
+Space: O(m × n)
+
+3️⃣ #207 already done? Alternative: #684 — Redundant Connection
+
+Medium
+
+class Solution {
+    int[] parent;
+
+    public int[] findRedundantConnection(int[][] edges) {
+        parent = new int[edges.length + 1];
+
+        for (int i = 0; i < parent.length; i++)
+            parent[i] = i;
+
+        for (int[] edge : edges) {
+            int u = edge[0];
+            int v = edge[1];
+
+            if (find(u) == find(v))
+                return edge;
+
+            union(u, v);
+        }
+
+        return new int[0];
+    }
+
+    private int find(int x) {
+        if (parent[x] != x)
+            parent[x] = find(parent[x]);
+
+        return parent[x];
+    }
+
+    private void union(int a, int b) {
+        parent[find(a)] = find(b);
+    }
+}
