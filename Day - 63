@@ -1,0 +1,142 @@
+1️⃣ #1091 — Shortest Path in Binary Matrix
+
+Medium | BFS
+
+class Solution {
+    public int shortestPathBinaryMatrix(int[][] grid) {
+        int n = grid.length;
+
+        if (grid[0][0] != 0 || grid[n - 1][n - 1] != 0)
+            return -1;
+
+        Queue<int[]> q = new LinkedList<>();
+        q.offer(new int[]{0, 0});
+        grid[0][0] = 1;
+
+        int[][] dir = {
+            {-1,-1}, {-1,0}, {-1,1},
+            {0,-1},           {0,1},
+            {1,-1},  {1,0},   {1,1}
+        };
+
+        while (!q.isEmpty()) {
+            int[] cur = q.poll();
+            int r = cur[0], c = cur[1];
+
+            if (r == n - 1 && c == n - 1)
+                return grid[r][c];
+
+            for (int[] d : dir) {
+                int nr = r + d[0];
+                int nc = c + d[1];
+
+                if (nr >= 0 && nr < n &&
+                    nc >= 0 && nc < n &&
+                    grid[nr][nc] == 0) {
+
+                    grid[nr][nc] = grid[r][c] + 1;
+                    q.offer(new int[]{nr, nc});
+                }
+            }
+        }
+
+        return -1;
+    }
+}
+
+Time: O(N²)
+Space: O(N²)
+
+2️⃣ #743 — Network Delay Time
+
+Medium | Dijkstra
+
+class Solution {
+    public int networkDelayTime(int[][] times, int n, int k) {
+        List<int[]>[] graph = new ArrayList[n + 1];
+
+        for (int i = 1; i <= n; i++)
+            graph[i] = new ArrayList<>();
+
+        for (int[] t : times)
+            graph[t[0]].add(new int[]{t[1], t[2]});
+
+        int[] dist = new int[n + 1];
+        Arrays.fill(dist, Integer.MAX_VALUE);
+        dist[k] = 0;
+
+        PriorityQueue<int[]> pq =
+            new PriorityQueue<>((a, b) -> a[1] - b[1]);
+
+        pq.offer(new int[]{k, 0});
+
+        while (!pq.isEmpty()) {
+            int[] cur = pq.poll();
+            int node = cur[0];
+            int time = cur[1];
+
+            if (time > dist[node])
+                continue;
+
+            for (int[] edge : graph[node]) {
+                int next = edge[0];
+                int newTime = time + edge[1];
+
+                if (newTime < dist[next]) {
+                    dist[next] = newTime;
+                    pq.offer(new int[]{next, newTime});
+                }
+            }
+        }
+
+        int answer = 0;
+
+        for (int i = 1; i <= n; i++) {
+            if (dist[i] == Integer.MAX_VALUE)
+                return -1;
+
+            answer = Math.max(answer, dist[i]);
+        }
+
+        return answer;
+    }
+}
+
+Time: O((V + E) log V)
+Space: O(V + E)
+
+3️⃣ #787 — Cheapest Flights Within K Stops
+
+Medium | Bellman-Ford style DP
+
+class Solution {
+    public int findCheapestPrice(int n, int[][] flights,
+                                 int src, int dst, int k) {
+
+        int[] dist = new int[n];
+        Arrays.fill(dist, Integer.MAX_VALUE);
+        dist[src] = 0;
+
+        for (int i = 0; i <= k; i++) {
+            int[] temp = dist.clone();
+
+            for (int[] flight : flights) {
+                int from = flight[0];
+                int to = flight[1];
+                int price = flight[2];
+
+                if (dist[from] != Integer.MAX_VALUE) {
+                    temp[to] = Math.min(
+                        temp[to],
+                        dist[from] + price
+                    );
+                }
+            }
+
+            dist = temp;
+        }
+
+        return dist[dst] == Integer.MAX_VALUE ? -1 : dist[dst];
+    }
+}
+
