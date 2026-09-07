@@ -1,0 +1,184 @@
+#210 — Course Schedule II
+
+Medium | Topological Sort
+
+class Solution {
+    public int[] findOrder(int numCourses, int[][] prerequisites) {
+        List<List<Integer>> graph = new ArrayList<>();
+
+        for (int i = 0; i < numCourses; i++) {
+            graph.add(new ArrayList<>());
+        }
+
+        int[] indegree = new int[numCourses];
+
+        for (int[] p : prerequisites) {
+            graph.get(p[1]).add(p[0]);
+            indegree[p[0]]++;
+        }
+
+        Queue<Integer> q = new LinkedList<>();
+
+        for (int i = 0; i < numCourses; i++) {
+            if (indegree[i] == 0) {
+                q.offer(i);
+            }
+        }
+
+        int[] order = new int[numCourses];
+        int index = 0;
+
+        while (!q.isEmpty()) {
+            int course = q.poll();
+            order[index++] = course;
+
+            for (int next : graph.get(course)) {
+                indegree[next]--;
+
+                if (indegree[next] == 0) {
+                    q.offer(next);
+                }
+            }
+        }
+
+        return index == numCourses ? order : new int[0];
+    }
+}
+
+Concept: Kahn's Algorithm
+Time: O(V + E)
+Space: O(V + E)
+
+💡 #207 vs #210:
+
+#207 → Can finish? boolean
+#210 → Course order enna? int[]
+2️⃣ #127 — Word Ladder
+
+Hard | BFS
+
+class Solution {
+    public int ladderLength(String beginWord, String endWord,
+                            List<String> wordList) {
+
+        Set<String> words = new HashSet<>(wordList);
+
+        if (!words.contains(endWord)) {
+            return 0;
+        }
+
+        Queue<String> q = new LinkedList<>();
+        q.offer(beginWord);
+
+        int level = 1;
+
+        while (!q.isEmpty()) {
+            int size = q.size();
+
+            for (int s = 0; s < size; s++) {
+                String word = q.poll();
+                char[] chars = word.toCharArray();
+
+                for (int i = 0; i < chars.length; i++) {
+                    char original = chars[i];
+
+                    for (char c = 'a'; c <= 'z'; c++) {
+                        chars[i] = c;
+                        String next = new String(chars);
+
+                        if (next.equals(endWord)) {
+                            return level + 1;
+                        }
+
+                        if (words.contains(next)) {
+                            words.remove(next);
+                            q.offer(next);
+                        }
+                    }
+
+                    chars[i] = original;
+                }
+            }
+
+            level++;
+        }
+
+        return 0;
+    }
+}
+
+Main idea: One letter mattum change panni shortest transformation find pannuvom.
+
+Time: O(N × L × 26)
+Space: O(N)
+
+⭐ Interview-la very important BFS problem.
+
+3️⃣ #1631 — Path With Minimum Effort
+
+Medium | Dijkstra
+
+class Solution {
+    public int minimumEffortPath(int[][] heights) {
+        int m = heights.length;
+        int n = heights[0].length;
+
+        int[][] effort = new int[m][n];
+
+        for (int[] row : effort) {
+            Arrays.fill(row, Integer.MAX_VALUE);
+        }
+
+        PriorityQueue<int[]> pq =
+            new PriorityQueue<>((a, b) -> a[0] - b[0]);
+
+        effort[0][0] = 0;
+        pq.offer(new int[]{0, 0, 0});
+
+        int[][] dir = {
+            {1, 0}, {-1, 0},
+            {0, 1}, {0, -1}
+        };
+
+        while (!pq.isEmpty()) {
+            int[] cur = pq.poll();
+
+            int currentEffort = cur[0];
+            int r = cur[1];
+            int c = cur[2];
+
+            if (r == m - 1 && c == n - 1) {
+                return currentEffort;
+            }
+
+            if (currentEffort > effort[r][c]) {
+                continue;
+            }
+
+            for (int[] d : dir) {
+                int nr = r + d[0];
+                int nc = c + d[1];
+
+                if (nr < 0 || nr >= m ||
+                    nc < 0 || nc >= n) {
+                    continue;
+                }
+
+                int diff = Math.abs(
+                    heights[r][c] - heights[nr][nc]
+                );
+
+                int newEffort = Math.max(currentEffort, diff);
+
+                if (newEffort < effort[nr][nc]) {
+                    effort[nr][nc] = newEffort;
+                    pq.offer(new int[]{newEffort, nr, nc});
+                }
+            }
+        }
+
+        return 0;
+    }
+}
+
+Concept: Dijkstra + PriorityQueue
