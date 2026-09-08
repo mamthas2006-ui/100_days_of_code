@@ -1,0 +1,212 @@
+1️⃣ #208 — Implement Trie (Prefix Tree)
+
+Medium
+
+class Trie {
+
+    class Node {
+        Node[] children = new Node[26];
+        boolean isEnd;
+    }
+
+    Node root;
+
+    public Trie() {
+        root = new Node();
+    }
+
+    public void insert(String word) {
+        Node curr = root;
+
+        for (char c : word.toCharArray()) {
+            int index = c - 'a';
+
+            if (curr.children[index] == null) {
+                curr.children[index] = new Node();
+            }
+
+            curr = curr.children[index];
+        }
+
+        curr.isEnd = true;
+    }
+
+    public boolean search(String word) {
+        Node node = findNode(word);
+        return node != null && node.isEnd;
+    }
+
+    public boolean startsWith(String prefix) {
+        return findNode(prefix) != null;
+    }
+
+    private Node findNode(String word) {
+        Node curr = root;
+
+        for (char c : word.toCharArray()) {
+            int index = c - 'a';
+
+            if (curr.children[index] == null) {
+                return null;
+            }
+
+            curr = curr.children[index];
+        }
+
+        return curr;
+    }
+}
+
+Concept: Trie / Prefix Tree
+Insert/Search: O(L) where L = word length
+Space: O(N × L) approximately
+
+2️⃣ #211 — Design Add and Search Words Data Structure
+
+Medium | Trie + DFS
+
+class WordDictionary {
+
+    class Node {
+        Node[] children = new Node[26];
+        boolean isEnd;
+    }
+
+    Node root;
+
+    public WordDictionary() {
+        root = new Node();
+    }
+
+    public void addWord(String word) {
+        Node curr = root;
+
+        for (char c : word.toCharArray()) {
+            int index = c - 'a';
+
+            if (curr.children[index] == null) {
+                curr.children[index] = new Node();
+            }
+
+            curr = curr.children[index];
+        }
+
+        curr.isEnd = true;
+    }
+
+    public boolean search(String word) {
+        return dfs(word, 0, root);
+    }
+
+    private boolean dfs(String word, int index, Node node) {
+        if (index == word.length()) {
+            return node.isEnd;
+        }
+
+        char c = word.charAt(index);
+
+        if (c != '.') {
+            int i = c - 'a';
+
+            if (node.children[i] == null) {
+                return false;
+            }
+
+            return dfs(word, index + 1, node.children[i]);
+        }
+
+        for (Node child : node.children) {
+            if (child != null && dfs(word, index + 1, child)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+}
+
+Special trick: . means any character.
+
+Example:
+
+bad
+dad
+mad
+
+Search "b.." → bad ✅
+
+3️⃣ #212 — Word Search II
+
+Hard | Trie + Backtracking
+
+class Solution {
+
+    class TrieNode {
+        TrieNode[] children = new TrieNode[26];
+        String word;
+    }
+
+    TrieNode root = new TrieNode();
+    List<String> result = new ArrayList<>();
+
+    public List<String> findWords(char[][] board, String[] words) {
+
+        for (String word : words) {
+            insert(word);
+        }
+
+        for (int r = 0; r < board.length; r++) {
+            for (int c = 0; c < board[0].length; c++) {
+                dfs(board, r, c, root);
+            }
+        }
+
+        return result;
+    }
+
+    private void insert(String word) {
+        TrieNode curr = root;
+
+        for (char c : word.toCharArray()) {
+            int index = c - 'a';
+
+            if (curr.children[index] == null) {
+                curr.children[index] = new TrieNode();
+            }
+
+            curr = curr.children[index];
+        }
+
+        curr.word = word;
+    }
+
+    private void dfs(char[][] board, int r, int c, TrieNode node) {
+
+        if (r < 0 || r >= board.length ||
+            c < 0 || c >= board[0].length ||
+            board[r][c] == '#') {
+            return;
+        }
+
+        char ch = board[r][c];
+        TrieNode next = node.children[ch - 'a'];
+
+        if (next == null) {
+            return;
+        }
+
+        if (next.word != null) {
+            result.add(next.word);
+            next.word = null;
+        }
+
+        board[r][c] = '#';
+
+        dfs(board, r + 1, c, next);
+        dfs(board, r - 1, c, next);
+        dfs(board, r, c + 1, next);
+        dfs(board, r, c - 1, next);
+
+        board[r][c] = ch;
+    }
+}
