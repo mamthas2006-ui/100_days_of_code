@@ -1,0 +1,116 @@
+1️⃣ LeetCode #33 — Search in Rotated Sorted Array
+
+Medium
+
+class Solution {
+    public int search(int[] nums, int target) {
+        int left = 0;
+        int right = nums.length - 1;
+
+        while (left <= right) {
+            int mid = left + (right - left) / 2;
+
+            if (nums[mid] == target) {
+                return mid;
+            }
+
+            // Left half is sorted
+            if (nums[left] <= nums[mid]) {
+                if (nums[left] <= target && target < nums[mid]) {
+                    right = mid - 1;
+                } else {
+                    left = mid + 1;
+                }
+            }
+            // Right half is sorted
+            else {
+                if (nums[mid] < target && target <= nums[right]) {
+                    left = mid + 1;
+                } else {
+                    right = mid - 1;
+                }
+            }
+        }
+
+        return -1;
+    }
+}
+
+🧠 Core idea: Every step-la one half definitely sorted. Sorted half-kulla target irukka-nu check panni search space reduce pannuvom.
+
+Time: O(log n)
+Space: O(1)
+
+2️⃣ LeetCode #153 — Find Minimum in Rotated Sorted Array
+
+Medium
+
+class Solution {
+    public int findMin(int[] nums) {
+        int left = 0;
+        int right = nums.length - 1;
+
+        while (left < right) {
+            int mid = left + (right - left) / 2;
+
+            if (nums[mid] > nums[right]) {
+                left = mid + 1;
+            } else {
+                right = mid;
+            }
+        }
+
+        return nums[left];
+    }
+}
+🧠 Simple logic
+
+nums[mid] > nums[right]
+
+➡️ Minimum right side-la irukkum.
+
+Otherwise:
+
+➡️ Minimum left side including mid-la irukkum.
+
+Example:
+
+[4,5,6,7,0,1,2]
+
+➡️ Answer = 0
+
+Time: O(log n)
+Space: O(1)
+
+3️⃣ LeetCode #875 — Koko Eating Bananas
+
+Medium
+
+class Solution {
+    public int minEatingSpeed(int[] piles, int h) {
+        int left = 1;
+        int right = 0;
+
+        for (int pile : piles) {
+            right = Math.max(right, pile);
+        }
+
+        while (left < right) {
+            int mid = left + (right - left) / 2;
+
+            long hours = 0;
+
+            for (int pile : piles) {
+                hours += (pile + mid - 1) / mid;
+            }
+
+            if (hours <= h) {
+                right = mid;
+            } else {
+                left = mid + 1;
+            }
+        }
+
+        return left;
+    }
+}
