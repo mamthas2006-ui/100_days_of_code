@@ -1,0 +1,132 @@
+
+1️⃣ LeetCode #49 — Group Anagrams
+
+Medium
+
+class Solution {
+    public List<List<String>> groupAnagrams(String[] strs) {
+        Map<String, List<String>> map = new HashMap<>();
+
+        for (String s : strs) {
+            int[] count = new int[26];
+
+            for (char c : s.toCharArray()) {
+                count[c - 'a']++;
+            }
+
+            StringBuilder key = new StringBuilder();
+
+            for (int n : count) {
+                key.append('#').append(n);
+            }
+
+            map.computeIfAbsent(key.toString(), k -> new ArrayList<>())
+               .add(s);
+        }
+
+        return new ArrayList<>(map.values());
+    }
+}
+
+🧠 Idea: Anagram words-ku character frequency same.
+
+eat → [1,0,0,0,1,...]
+tea → same frequency
+
+So same key → same group.
+
+Time: O(n × k)
+Space: O(n × k)
+
+2️⃣ LeetCode #128 — Longest Consecutive Sequence
+
+Medium
+
+class Solution {
+    public int longestConsecutive(int[] nums) {
+        Set<Integer> set = new HashSet<>();
+
+        for (int num : nums) {
+            set.add(num);
+        }
+
+        int longest = 0;
+
+        for (int num : set) {
+
+            // Start of a sequence
+            if (!set.contains(num - 1)) {
+                int current = num;
+                int length = 1;
+
+                while (set.contains(current + 1)) {
+                    current++;
+                    length++;
+                }
+
+                longest = Math.max(longest, length);
+            }
+        }
+
+        return longest;
+    }
+}
+
+Example:
+
+[100,4,200,1,3,2]
+
+Sequence:
+
+1 → 2 → 3 → 4
+
+Answer = 4
+
+🧠 Important trick: num - 1 illa-na, adhu sequence oda starting point.
+
+Time: O(n) average
+Space: O(n)
+
+3️⃣ LeetCode #347 — Top K Frequent Elements
+
+Medium
+
+class Solution {
+    public int[] topKFrequent(int[] nums, int k) {
+        Map<Integer, Integer> frequency = new HashMap<>();
+
+        for (int num : nums) {
+            frequency.put(num, frequency.getOrDefault(num, 0) + 1);
+        }
+
+        List<Integer>[] bucket = new List[nums.length + 1];
+
+        for (Map.Entry<Integer, Integer> entry : frequency.entrySet()) {
+            int freq = entry.getValue();
+
+            if (bucket[freq] == null) {
+                bucket[freq] = new ArrayList<>();
+            }
+
+            bucket[freq].add(entry.getKey());
+        }
+
+        int[] result = new int[k];
+        int index = 0;
+
+        for (int freq = bucket.length - 1; freq >= 0 && index < k; freq--) {
+
+            if (bucket[freq] != null) {
+                for (int num : bucket[freq]) {
+                    result[index++] = num;
+
+                    if (index == k) {
+                        break;
+                    }
+                }
+            }
+        }
+
+        return result;
+    }
+}
