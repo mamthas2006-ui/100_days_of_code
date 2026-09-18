@@ -1,0 +1,209 @@
+1️⃣ LeetCode #146 — LRU Cache
+
+Medium ⭐ Very Important
+
+class LRUCache {
+
+    private class Node {
+        int key;
+        int value;
+        Node prev;
+        Node next;
+
+        Node(int key, int value) {
+            this.key = key;
+            this.value = value;
+        }
+    }
+
+    private final int capacity;
+    private final HashMap<Integer, Node> map;
+    private final Node head;
+    private final Node tail;
+
+    public LRUCache(int capacity) {
+        this.capacity = capacity;
+        map = new HashMap<>();
+
+        head = new Node(0, 0);
+        tail = new Node(0, 0);
+
+        head.next = tail;
+        tail.prev = head;
+    }
+
+    public int get(int key) {
+        if (!map.containsKey(key)) {
+            return -1;
+        }
+
+        Node node = map.get(key);
+        remove(node);
+        insertAtEnd(node);
+
+        return node.value;
+    }
+
+    public void put(int key, int value) {
+        if (map.containsKey(key)) {
+            remove(map.get(key));
+        }
+
+        Node node = new Node(key, value);
+        map.put(key, node);
+        insertAtEnd(node);
+
+        if (map.size() > capacity) {
+            Node leastRecentlyUsed = head.next;
+            remove(leastRecentlyUsed);
+            map.remove(leastRecentlyUsed.key);
+        }
+    }
+
+    private void remove(Node node) {
+        node.prev.next = node.next;
+        node.next.prev = node.prev;
+    }
+
+    private void insertAtEnd(Node node) {
+        node.prev = tail.prev;
+        node.next = tail;
+
+        tail.prev.next = node;
+        tail.prev = node;
+    }
+}
+🧠 Simple-a purinjuko:
+
+LRU = Least Recently Used
+
+Capacity = 2
+
+put(1,1)
+put(2,2)
+
+[1,2]
+
+get(1)
+
+[2,1]
+
+put(3,3)
+
+[2,1,3]
+ ↑
+ 2 removed
+
+Recently use pannadha first remove pannuvom.
+
+HashMap → fast lookup
+Doubly Linked List → order maintain
+
+Time: O(1) for get() and put()
+Space: O(capacity)
+
+2️⃣ LeetCode #380 — Insert Delete GetRandom O(1)
+
+Medium
+
+class RandomizedSet {
+
+    private ArrayList<Integer> list;
+    private HashMap<Integer, Integer> map;
+    private Random random;
+
+    public RandomizedSet() {
+        list = new ArrayList<>();
+        map = new HashMap<>();
+        random = new Random();
+    }
+
+    public boolean insert(int val) {
+        if (map.containsKey(val)) {
+            return false;
+        }
+
+        map.put(val, list.size());
+        list.add(val);
+
+        return true;
+    }
+
+    public boolean remove(int val) {
+        if (!map.containsKey(val)) {
+            return false;
+        }
+
+        int index = map.get(val);
+        int lastValue = list.get(list.size() - 1);
+
+        list.set(index, lastValue);
+        map.put(lastValue, index);
+
+        list.remove(list.size() - 1);
+        map.remove(val);
+
+        return true;
+    }
+
+    public int getRandom() {
+        return list.get(random.nextInt(list.size()));
+    }
+}
+🧠 Main trick
+
+ArrayList → random access O(1)
+
+But middle-la delete panna O(n).
+
+So:
+
+[10, 20, 30, 40]
+     ↑ remove 20
+
+Move last element:
+
+[10, 40, 30]
+
+Then last element remove pannina O(1).
+
+Time: O(1) average
+Space: O(n)
+
+3️⃣ LeetCode #155 — Min Stack
+
+Medium
+
+class MinStack {
+
+    private Stack<Integer> stack;
+    private Stack<Integer> minStack;
+
+    public MinStack() {
+        stack = new Stack<>();
+        minStack = new Stack<>();
+    }
+
+    public void push(int val) {
+        stack.push(val);
+
+        if (minStack.isEmpty()) {
+            minStack.push(val);
+        } else {
+            minStack.push(Math.min(val, minStack.peek()));
+        }
+    }
+
+    public void pop() {
+        stack.pop();
+        minStack.pop();
+    }
+
+    public int top() {
+        return stack.peek();
+    }
+
+    public int getMin() {
+        return minStack.peek();
+    }
+}
