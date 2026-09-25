@@ -1,0 +1,128 @@
+1. Two Sum — LeetCode #1
+
+Pattern: HashMap
+
+Question: Given an array and a target, return the indices of two numbers whose sum equals the target.
+
+class Solution {
+    public int[] twoSum(int[] nums, int target) {
+
+        HashMap<Integer, Integer> map = new HashMap<>();
+
+        for (int i = 0; i < nums.length; i++) {
+
+            int need = target - nums[i];
+
+            if (map.containsKey(need)) {
+                return new int[]{map.get(need), i};
+            }
+
+            map.put(nums[i], i);
+        }
+
+        return new int[]{};
+    }
+}
+
+Example:
+
+nums = [2,7,11,15]
+target = 9
+
+Output = [0,1]
+
+Idea:
+need = target - current number
+
+If need already exists in HashMap → answer found.
+
+Time: O(n)
+Space: O(n)
+
+2. Best Time to Buy and Sell Stock — LeetCode #121
+
+Pattern: One-pass / Greedy
+
+Question: Find the maximum profit from buying on one day and selling on a later day.
+
+class Solution {
+    public int maxProfit(int[] prices) {
+
+        int minPrice = prices[0];
+        int maxProfit = 0;
+
+        for (int i = 1; i < prices.length; i++) {
+
+            if (prices[i] < minPrice) {
+                minPrice = prices[i];
+            }
+
+            int profit = prices[i] - minPrice;
+
+            if (profit > maxProfit) {
+                maxProfit = profit;
+            }
+        }
+
+        return maxProfit;
+    }
+}
+
+Example:
+
+prices = [7,1,5,3,6,4]
+
+Output = 5
+
+Buy at 1, sell at 6.
+
+Core idea:
+
+Keep the minimum price seen so far.
+Calculate today's profit.
+Keep the maximum profit.
+
+Time: O(n)
+Space: O(1)
+
+3. Valid Parentheses — LeetCode #20
+
+Pattern: Stack
+
+Question: Check whether brackets are correctly opened and closed.
+
+class Solution {
+    public boolean isValid(String s) {
+
+        Stack<Character> stack = new Stack<>();
+
+        for (char ch : s.toCharArray()) {
+
+            if (ch == '(' || ch == '{' || ch == '[') {
+                stack.push(ch);
+            }
+            else {
+
+                if (stack.isEmpty()) {
+                    return false;
+                }
+
+                char top = stack.pop();
+
+                if (ch == ')' && top != '(') {
+                    return false;
+                }
+
+                if (ch == '}' && top != '{') {
+                    return false;
+                }
+
+                if (ch == ']' && top != '[') {
+                    return false;
+                }
+            }
+        }
+
+        return stack.isEmpty();
+    }
+}
