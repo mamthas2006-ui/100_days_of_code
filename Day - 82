@@ -1,0 +1,120 @@
+Sure Bubu. 🔥 Another **3 LeetCode questions**, slightly increasing the difficulty.
+
+### 4. Contains Duplicate — LeetCode #217
+
+**Pattern:** HashSet
+
+**Question:** Return `true` if any value appears at least twice.
+
+```java
+class Solution {
+    public boolean containsDuplicate(int[] nums) {
+
+        HashSet<Integer> set = new HashSet<>();
+
+        for (int num : nums) {
+
+            if (set.contains(num)) {
+                return true;
+            }
+
+            set.add(num);
+        }
+
+        return false;
+    }
+}
+```
+
+**Example:**
+
+```text
+Input:  [1,2,3,1]
+Output: true
+```
+
+**Idea:**
+Already irukkura number again vandha → duplicate.
+
+**Time:** `O(n)`
+**Space:** `O(n)`
+
+---
+
+### 5. Valid Anagram — LeetCode #242
+
+**Pattern:** Frequency Array
+
+**Question:** Check whether two strings are anagrams.
+
+```java
+class Solution {
+    public boolean isAnagram(String s, String t) {
+
+        if (s.length() != t.length()) {
+            return false;
+        }
+
+        int[] count = new int[26];
+
+        for (int i = 0; i < s.length(); i++) {
+            count[s.charAt(i) - 'a']++;
+            count[t.charAt(i) - 'a']--;
+        }
+
+        for (int num : count) {
+            if (num != 0) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+}
+```
+
+**Example:**
+
+```text
+s = "anagram"
+t = "nagaram"
+
+Output: true
+```
+
+**Thanglish idea:**
+`a` ethana times irukku, `b` ethana times irukku... nu count pannrom.
+
+`+1` for `s`, `-1` for `t`.
+
+Everything `0` → Anagram.
+
+**Time:** `O(n)`
+**Space:** `O(1)` because array size is always 26.
+
+---
+
+### 6. Maximum Subarray — LeetCode #53
+
+**Pattern:** Kadane's Algorithm
+
+**Question:** Find the contiguous subarray having the largest sum.
+
+```java
+class Solution {
+    public int maxSubArray(int[] nums) {
+
+        int currentSum = nums[0];
+        int maxSum = nums[0];
+
+        for (int i = 1; i < nums.length; i++) {
+
+            currentSum = Math.max(nums[i], currentSum + nums[i]);
+
+            maxSum = Math.max(maxSum, currentSum);
+        }
+
+        return maxSum;
+    }
+}
+```
