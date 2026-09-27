@@ -1,0 +1,144 @@
+Sure Bubu. 🔥 Here are the **next 3 LeetCode problems** with Java answers. This time, let's focus on **Two Pointers + Sliding Window + Binary Search**.
+
+### 7. Valid Palindrome — LeetCode #125
+
+**Pattern:** Two Pointers
+
+```java
+class Solution {
+    public boolean isPalindrome(String s) {
+
+        s = s.toLowerCase().replaceAll("[^a-z0-9]", "");
+
+        int left = 0;
+        int right = s.length() - 1;
+
+        while (left < right) {
+
+            if (s.charAt(left) != s.charAt(right)) {
+                return false;
+            }
+
+            left++;
+            right--;
+        }
+
+        return true;
+    }
+}
+```
+
+**Example**
+
+```text
+Input:  "A man, a plan, a canal: Panama"
+Output: true
+```
+
+**Logic:**
+`left` → beginning
+`right` → ending
+
+Both same irundha → move inward.
+
+**Time:** `O(n)`
+**Space:** `O(n)` because of the cleaned string.
+
+---
+
+### 8. Longest Substring Without Repeating Characters — LeetCode #3
+
+**Pattern:** Sliding Window
+
+```java
+class Solution {
+    public int lengthOfLongestSubstring(String s) {
+
+        HashSet<Character> set = new HashSet<>();
+
+        int left = 0;
+        int maxLength = 0;
+
+        for (int right = 0; right < s.length(); right++) {
+
+            while (set.contains(s.charAt(right))) {
+                set.remove(s.charAt(left));
+                left++;
+            }
+
+            set.add(s.charAt(right));
+
+            maxLength = Math.max(maxLength, right - left + 1);
+        }
+
+        return maxLength;
+    }
+}
+```
+
+**Example**
+
+```text
+Input:  "abcabcbb"
+Output: 3
+```
+
+Longest substring:
+
+```text
+"abc"
+```
+
+**Core idea:**
+
+```text
+left → window start
+right → window end
+```
+
+Duplicate vandha, `left` move pannuvom.
+
+**Time:** `O(n)`
+**Space:** `O(n)`
+
+---
+
+### 9. Binary Search — LeetCode #704
+
+**Pattern:** Binary Search
+
+```java
+class Solution {
+    public int search(int[] nums, int target) {
+
+        int left = 0;
+        int right = nums.length - 1;
+
+        while (left <= right) {
+
+            int mid = left + (right - left) / 2;
+
+            if (nums[mid] == target) {
+                return mid;
+            }
+
+            if (nums[mid] < target) {
+                left = mid + 1;
+            }
+            else {
+                right = mid - 1;
+            }
+        }
+
+        return -1;
+    }
+}
+```
+
+**Example:**
+
+```text
+Input:  nums = [-1,0,3,5,9,12]
+target = 9
+
+Output: 4
