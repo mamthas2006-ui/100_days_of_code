@@ -1,0 +1,181 @@
+Sure Bubu 🔥 Next 3 — **important interview-level patterns**.
+
+### 10. Product of Array Except Self — LeetCode #238
+
+**Pattern:** Prefix + Suffix
+
+```java
+class Solution {
+    public int[] productExceptSelf(int[] nums) {
+
+        int n = nums.length;
+        int[] answer = new int[n];
+
+        int prefix = 1;
+
+        for (int i = 0; i < n; i++) {
+            answer[i] = prefix;
+            prefix = prefix * nums[i];
+        }
+
+        int suffix = 1;
+
+        for (int i = n - 1; i >= 0; i--) {
+            answer[i] = answer[i] * suffix;
+            suffix = suffix * nums[i];
+        }
+
+        return answer;
+    }
+}
+```
+
+**Example:**
+
+```text
+Input:  [1,2,3,4]
+Output: [24,12,8,6]
+```
+
+**Idea:**
+
+For every position:
+
+```text
+answer[i] = left product × right product
+```
+
+**Time:** `O(n)`
+**Space:** `O(1)` extra space *(excluding output array)*
+
+---
+
+### 11. 3Sum — LeetCode #15
+
+**Pattern:** Sorting + Two Pointers
+
+```java
+class Solution {
+    public List<List<Integer>> threeSum(int[] nums) {
+
+        List<List<Integer>> result = new ArrayList<>();
+
+        Arrays.sort(nums);
+
+        for (int i = 0; i < nums.length - 2; i++) {
+
+            if (i > 0 && nums[i] == nums[i - 1]) {
+                continue;
+            }
+
+            int left = i + 1;
+            int right = nums.length - 1;
+
+            while (left < right) {
+
+                int sum = nums[i] + nums[left] + nums[right];
+
+                if (sum == 0) {
+
+                    result.add(Arrays.asList(
+                        nums[i],
+                        nums[left],
+                        nums[right]
+                    ));
+
+                    while (left < right &&
+                           nums[left] == nums[left + 1]) {
+                        left++;
+                    }
+
+                    while (left < right &&
+                           nums[right] == nums[right - 1]) {
+                        right--;
+                    }
+
+                    left++;
+                    right--;
+                }
+                else if (sum < 0) {
+                    left++;
+                }
+                else {
+                    right--;
+                }
+            }
+        }
+
+        return result;
+    }
+}
+```
+
+**Example:**
+
+```text
+Input:
+[-1,0,1,2,-1,-4]
+
+Output:
+[[-1,-1,2], [-1,0,1]]
+```
+
+**Main idea:**
+
+First sort:
+
+```text
+[-4,-1,-1,0,1,2]
+```
+
+Then:
+
+```text
+i → fixed number
+left → next number
+right → last number
+```
+
+If sum is:
+
+```text
+sum < 0 → left++
+sum > 0 → right--
+sum = 0 → answer
+```
+
+**Time:** `O(n²)`
+**Space:** `O(1)` extra *(excluding output)*
+
+---
+
+### 12. Daily Temperatures — LeetCode #739
+
+**Pattern:** Monotonic Stack
+
+```java
+class Solution {
+    public int[] dailyTemperatures(int[] temperatures) {
+
+        int n = temperatures.length;
+        int[] answer = new int[n];
+
+        Stack<Integer> stack = new Stack<>();
+
+        for (int i = 0; i < n; i++) {
+
+            while (!stack.isEmpty() &&
+                   temperatures[i] > temperatures[stack.peek()]) {
+
+                int previous = stack.pop();
+
+                answer[previous] = i - previous;
+            }
+
+            stack.push(i);
+        }
+
+        return answer;
+    }
+}
+```
