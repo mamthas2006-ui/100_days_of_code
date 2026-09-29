@@ -1,0 +1,191 @@
+Sure Bubu 🔥 Next 3 — these are **very common interview patterns**.
+
+## 13. Container With Most Water — LeetCode #11
+
+**Pattern:** Two Pointers
+
+```java
+class Solution {
+    public int maxArea(int[] height) {
+
+        int left = 0;
+        int right = height.length - 1;
+        int maxWater = 0;
+
+        while (left < right) {
+
+            int width = right - left;
+            int h = Math.min(height[left], height[right]);
+
+            int water = width * h;
+
+            maxWater = Math.max(maxWater, water);
+
+            if (height[left] < height[right]) {
+                left++;
+            } else {
+                right--;
+            }
+        }
+
+        return maxWater;
+    }
+}
+```
+
+**Example:**
+
+```text
+Input:  [1,8,6,2,5,4,8,3,7]
+Output: 49
+```
+
+### Core idea
+
+```text
+water = width × minimum height
+```
+
+Two pointers start from both ends.
+
+Smaller height pointer move pannuvom.
+
+**Time:** `O(n)`
+**Space:** `O(1)`
+
+---
+
+## 14. Top K Frequent Elements — LeetCode #347
+
+**Pattern:** HashMap + Bucket Sort
+
+```java
+class Solution {
+    public int[] topKFrequent(int[] nums, int k) {
+
+        HashMap<Integer, Integer> map = new HashMap<>();
+
+        for (int num : nums) {
+            map.put(num, map.getOrDefault(num, 0) + 1);
+        }
+
+        List<Integer>[] bucket = new ArrayList[nums.length + 1];
+
+        for (int num : map.keySet()) {
+
+            int frequency = map.get(num);
+
+            if (bucket[frequency] == null) {
+                bucket[frequency] = new ArrayList<>();
+            }
+
+            bucket[frequency].add(num);
+        }
+
+        int[] result = new int[k];
+        int index = 0;
+
+        for (int i = bucket.length - 1; i >= 0 && index < k; i--) {
+
+            if (bucket[i] != null) {
+
+                for (int num : bucket[i]) {
+
+                    result[index] = num;
+                    index++;
+
+                    if (index == k) {
+                        break;
+                    }
+                }
+            }
+        }
+
+        return result;
+    }
+}
+```
+
+**Example:**
+
+```text
+Input:
+nums = [1,1,1,2,2,3]
+k = 2
+
+Output:
+[1,2]
+```
+
+### Core idea
+
+First count:
+
+```text
+1 → 3 times
+2 → 2 times
+3 → 1 time
+```
+
+Then frequency based buckets:
+
+```text
+3 → [1]
+2 → [2]
+1 → [3]
+```
+
+Start from highest frequency.
+
+**Time:** `O(n)`
+**Space:** `O(n)`
+
+---
+
+## 15. Longest Palindromic Substring — LeetCode #5
+
+**Pattern:** Expand Around Center
+
+```java
+class Solution {
+    public String longestPalindrome(String s) {
+
+        if (s.length() < 2) {
+            return s;
+        }
+
+        int start = 0;
+        int end = 0;
+
+        for (int i = 0; i < s.length(); i++) {
+
+            int len1 = expand(s, i, i);
+            int len2 = expand(s, i, i + 1);
+
+            int len = Math.max(len1, len2);
+
+            if (len > end - start + 1) {
+
+                start = i - (len - 1) / 2;
+                end = i + len / 2;
+            }
+        }
+
+        return s.substring(start, end + 1);
+    }
+
+    public int expand(String s, int left, int right) {
+
+        while (left >= 0 &&
+               right < s.length() &&
+               s.charAt(left) == s.charAt(right)) {
+
+            left--;
+            right++;
+        }
+
+        return right - left - 1;
+    }
+}
+```
+
