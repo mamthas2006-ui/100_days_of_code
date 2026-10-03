@@ -1,0 +1,160 @@
+🔥 **Today’s 3 — let’s move into important Medium problems.**
+
+## 19. House Robber — LeetCode #198
+
+**Pattern:** Dynamic Programming
+
+```java
+class Solution {
+    public int rob(int[] nums) {
+
+        int prev2 = 0;
+        int prev1 = 0;
+
+        for (int num : nums) {
+
+            int current = Math.max(prev1, prev2 + num);
+
+            prev2 = prev1;
+            prev1 = current;
+        }
+
+        return prev1;
+    }
+}
+```
+
+**Example:**
+
+```text
+Input:  [2,7,9,3,1]
+Output: 12
+```
+
+Choose:
+
+```text
+2 + 9 + 1 = 12
+```
+
+### Logic
+
+For every house:
+
+```text
+Don't rob → prev1
+Rob → prev2 + current house
+```
+
+Take the maximum.
+
+**Time:** `O(n)`
+**Space:** `O(1)`
+
+---
+
+## 20. Coin Change — LeetCode #322
+
+**Pattern:** Dynamic Programming
+
+```java
+class Solution {
+    public int coinChange(int[] coins, int amount) {
+
+        int[] dp = new int[amount + 1];
+
+        Arrays.fill(dp, amount + 1);
+
+        dp[0] = 0;
+
+        for (int i = 1; i <= amount; i++) {
+
+            for (int coin : coins) {
+
+                if (coin <= i) {
+                    dp[i] = Math.min(
+                        dp[i],
+                        dp[i - coin] + 1
+                    );
+                }
+            }
+        }
+
+        return dp[amount] > amount ? -1 : dp[amount];
+    }
+}
+```
+
+**Example:**
+
+```text
+coins = [1,2,5]
+amount = 11
+
+Output = 3
+```
+
+Because:
+
+```text
+5 + 5 + 1 = 11
+```
+
+### Core idea
+
+`dp[i]` = minimum number of coins required to make amount `i`.
+
+For example:
+
+```text
+dp[5] = 1
+dp[6] = 2   → 5 + 1
+dp[10] = 2  → 5 + 5
+dp[11] = 3  → 5 + 5 + 1
+```
+
+**Time:** `O(amount × coins)`
+**Space:** `O(amount)`
+
+---
+
+## 21. Kth Largest Element in an Array — LeetCode #215
+
+**Pattern:** Heap / Priority Queue
+
+```java
+class Solution {
+    public int findKthLargest(int[] nums, int k) {
+
+        PriorityQueue<Integer> minHeap = new PriorityQueue<>();
+
+        for (int num : nums) {
+
+            minHeap.add(num);
+
+            if (minHeap.size() > k) {
+                minHeap.poll();
+            }
+        }
+
+        return minHeap.peek();
+    }
+}
+```
+
+**Example:**
+
+```text
+nums = [3,2,1,5,6,4]
+k = 2
+
+Output = 5
+```
+
+Sorted:
+
+```text
+[1,2,3,4,5,6]
+          ↑
+       2nd largest
+```
