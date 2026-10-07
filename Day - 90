@@ -1,0 +1,475 @@
+🔥 Today’s 3 — continuing the Medium interview set.
+
+22. Group Anagrams — LeetCode #49
+
+Pattern: HashMap + Sorting
+
+class Solution {
+    public List<List<String>> groupAnagrams(String[] strs) {
+
+        HashMap<String, List<String>> map = new HashMap<>();
+
+        for (String str : strs) {
+
+            char[] chars = str.toCharArray();
+            Arrays.sort(chars);
+
+            String key = new String(chars);
+
+            if (!map.containsKey(key)) {
+                map.put(key, new ArrayList<>());
+            }
+
+            map.get(key).add(str);
+        }
+
+        return new ArrayList<>(map.values());
+    }
+}
+
+Example:
+
+Input:
+["eat","tea","tan","ate","nat","bat"]
+
+Output:
+[["eat","tea","ate"],["tan","nat"],["bat"]]
+Core idea
+eat → aet
+tea → aet
+ate → aet
+
+Same sorted string → same group.
+
+Time: O(n × k log k)
+n = number of strings, k = average string length.
+
+23. Find Minimum in Rotated Sorted Array — LeetCode #153
+
+Pattern: Binary Search
+
+class Solution {
+    public int findMin(int[] nums) {
+
+        int left = 0;
+        int right = nums.length - 1;
+
+        while (left < right) {
+
+            int mid = left + (right - left) / 2;
+
+            if (nums[mid] > nums[right]) {
+                left = mid + 1;
+            } 
+            else {
+                right = mid;
+            }
+        }
+
+        return nums[left];
+    }
+}
+
+Example:
+
+Input:
+[4,5,6,7,0,1,2]
+
+Output:
+0
+Logic
+
+If:
+
+nums[mid] > nums[right]
+
+minimum must be on the right.
+
+So:
+
+left = mid + 1
+
+Otherwise:
+
+right = mid
+
+Time: O(log n)
+Space: O(1)
+
+24. Subarray Sum Equals K — LeetCode #560
+
+Pattern: Prefix Sum + HashMap
+
+class Solution {
+    public int subarraySum(int[] nums, int k) {
+
+        HashMap<Integer, Integer> map = new HashMap<>();
+
+        map.put(0, 1);
+
+        int sum = 0;
+        int count = 0;
+
+        for (int num : nums) {
+
+            sum += num;
+
+            int needed = sum - k;
+
+            if (map.containsKey(needed)) {
+                count += map.get(needed);
+            }
+
+            map.put(sum, map.getOrDefault(sum, 0) + 1);
+        }
+
+        return count;
+    }
+}
+
+Example:
+
+Input:
+nums = [1,1,1]
+k = 2
+
+Output:
+2
+
+Subarrays:
+
+[1,1]
+[1,1]
+🧠 Main trick
+
+Suppose current prefix sum is sum.
+
+We need:
+
+previousSum + k = sum
+
+Therefore:
+
+previousSum = sum - k
+
+HashMap-la sum - k irundha, அந்த many subarrays have sum k.
+
+Time: O(n)
+Space: O(n)
+
+🔥 Today's 3
+#	Problem	Pattern	Difficulty
+49	Group Anagrams	HashMap	Medium
+153	Find Minimum in Rotated Array	Binary Search	Medium
+560	Subarray Sum Equals K	Prefix Sum + HashMap	Medium
+
+Today’s most important one: #560. Prefix Sum + HashMap pattern purinjukitta, many subarray problems become much easier.
+
+Monday 7:30 PM
+today
+
+🔥 Today’s 3 LeetCode — next set
+
+25. Majority Element — LeetCode #169
+
+Pattern: Boyer-Moore Voting Algorithm
+
+class Solution {
+    public int majorityElement(int[] nums) {
+
+        int candidate = 0;
+        int count = 0;
+
+        for (int num : nums) {
+
+            if (count == 0) {
+                candidate = num;
+            }
+
+            if (num == candidate) {
+                count++;
+            } else {
+                count--;
+            }
+        }
+
+        return candidate;
+    }
+}
+
+Example:
+
+Input:  [2,2,1,1,1,2,2]
+Output: 2
+🧠 Logic
+
+Majority element appears more than n/2 times.
+
+Think like:
+
+same number      → +1
+different number → -1
+count = 0        → choose new candidate
+
+Because the majority element has more occurrences than all competing elements combined, it survives the cancellation.
+
+Time: O(n)
+Space: O(1)
+
+26. Move Zeroes — LeetCode #283
+
+Pattern: Two Pointers
+
+class Solution {
+    public void moveZeroes(int[] nums) {
+
+        int index = 0;
+
+        for (int num : nums) {
+
+            if (num != 0) {
+                nums[index] = num;
+                index++;
+            }
+        }
+
+        while (index < nums.length) {
+            nums[index] = 0;
+            index++;
+        }
+    }
+}
+
+Example:
+
+Input:  [0,1,0,3,12]
+
+Output: [1,3,12,0,0]
+🧠 Logic
+
+First collect all non-zero values:
+
+[1,3,12,_,_]
+
+Then fill remaining positions with 0:
+
+[1,3,12,0,0]
+
+Time: O(n)
+Space: O(1)
+
+27. Longest Consecutive Sequence — LeetCode #128
+
+Pattern: HashSet
+
+class Solution {
+    public int longestConsecutive(int[] nums) {
+
+        HashSet<Integer> set = new HashSet<>();
+
+        for (int num : nums) {
+            set.add(num);
+        }
+
+        int longest = 0;
+
+        for (int num : set) {
+
+            if (!set.contains(num - 1)) {
+
+                int current = num;
+                int length = 1;
+
+                while (set.contains(current + 1)) {
+                    current++;
+                    length++;
+                }
+
+                longest = Math.max(longest, length);
+            }
+        }
+
+        return longest;
+    }
+}
+
+Example:
+
+Input:  [100,4,200,1,3,2]
+
+Output: 4
+
+Because:
+
+1 → 2 → 3 → 4
+
+Length = 4.
+
+🧠 Important trick
+
+Why check:
+
+if (!set.contains(num - 1))
+
+?
+
+Because num is the start of a sequence.
+
+For:
+
+1,2,3,4
+
+Only 1 has no previous number.
+
+So we start counting only from 1, avoiding unnecessary repeated work.
+
+Time: O(n) average
+Space: O(n)
+
+🔥 Today's 3
+#	Problem	Pattern	Difficulty
+169	Majority Element	Boyer-Moore	Easy
+283	Move Zeroes	Two Pointers	Easy
+128	Longest Consecutive Sequence	HashSet	Medium
+
+Today's priority: #128. Don't sort the array. The whole point of this problem is recognizing how a HashSet gives O(1) average lookup and lets you reach O(n).
+
+Today 8:17 PM
+today
+
+🔥 Today’s 3 LeetCode — next level
+
+28. Climbing Stairs — LeetCode #70
+
+Pattern: Dynamic Programming
+
+class Solution {
+    public int climbStairs(int n) {
+
+        int one = 1;
+        int two = 1;
+
+        for (int i = 2; i <= n; i++) {
+
+            int current = one + two;
+
+            two = one;
+            one = current;
+        }
+
+        return one;
+    }
+}
+
+Example:
+
+Input: 5
+Output: 8
+Logic
+
+You can climb either:
+
+1 step
+or
+2 steps
+
+So:
+
+ways(n) = ways(n - 1) + ways(n - 2)
+
+This is basically the Fibonacci pattern.
+
+Time: O(n)
+Space: O(1)
+
+29. Linked List Cycle — LeetCode #141
+
+Pattern: Fast & Slow Pointers
+
+public class Solution {
+    public boolean hasCycle(ListNode head) {
+
+        ListNode slow = head;
+        ListNode fast = head;
+
+        while (fast != null && fast.next != null) {
+
+            slow = slow.next;
+            fast = fast.next.next;
+
+            if (slow == fast) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+}
+🧠 Core idea
+
+Two runners:
+
+slow → 1 step
+fast → 2 steps
+
+If there is a cycle:
+
+slow ↘
+       → → →
+fast ↗
+
+Eventually they meet.
+
+If no cycle → fast reaches null.
+
+Time: O(n)
+Space: O(1)
+
+30. Binary Tree Level Order Traversal — LeetCode #102
+
+Pattern: BFS + Queue
+
+class Solution {
+    public List<List<Integer>> levelOrder(TreeNode root) {
+
+        List<List<Integer>> result = new ArrayList<>();
+
+        if (root == null) {
+            return result;
+        }
+
+        Queue<TreeNode> queue = new LinkedList<>();
+
+        queue.add(root);
+
+        while (!queue.isEmpty()) {
+
+            int size = queue.size();
+
+            List<Integer> level = new ArrayList<>();
+
+            for (int i = 0; i < size; i++) {
+
+                TreeNode current = queue.poll();
+
+                level.add(current.val);
+
+                if (current.left != null) {
+                    queue.add(current.left);
+                }
+
+                if (current.right != null) {
+                    queue.add(current.right);
+                }
+            }
+
+            result.add(level);
+        }
+
+        return result;
+    }
+}
+
+Example:
+
+        3
