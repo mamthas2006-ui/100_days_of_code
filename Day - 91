@@ -1,0 +1,207 @@
+Bubu 🔥 Today's 3 LeetCode questions — Day 12, continuing your Java interview preparation. Innaiku focus: Backtracking, Stack, and Binary Tree DFS.
+
+## 31. Subsets — LeetCode #78
+
+Medium
+
+Backtracking
+
+Question: Given an array of distinct integers, return all possible subsets.
+
+Java answer
+
+Java
+
+```
+class Solution {
+    public List<List<Integer>> subsets(int[] nums) {
+
+        List<List<Integer>> result = new ArrayList<>();
+
+        backtrack(nums, 0, new ArrayList<>(), result);
+
+        return result;
+    }
+
+    public void backtrack(int[] nums, int index,
+                          List<Integer> current,
+                          List<List<Integer>> result) {
+
+        result.add(new ArrayList<>(current));
+
+        for (int i = index; i < nums.length; i++) {
+
+            current.add(nums[i]);
+
+            backtrack(nums, i + 1, current, result);
+
+            current.remove(current.size() - 1);
+        }
+    }
+}
+```
+
+Example
+
+```
+Input:  [1,2,3]
+
+Output:
+[[], [1], [1,2], [1,2,3],
+ [1,3], [2], [2,3], [3]]
+```
+
+Thanglish logic:
+
+* `current.add()` → element-ai subset-la add pannrom.
+
+* `backtrack()` → next elements try pannrom.
+
+* `current.remove()` → previous choice-ai undo pannrom.
+
+`[1,2,3]` ku total subsets 23=82^3 = 823=8.
+
+Time: O(n⋅2n)O(n \cdot 2^n)O(n⋅2n)
+
+## 32. Min Stack — LeetCode #155
+
+Medium
+
+Stack
+
+Question: Implement a stack supporting `push`, `pop`, `top`, and retrieving the minimum element in constant time.
+
+Java answer
+
+Java
+
+```
+class MinStack {
+
+    Stack<Integer> stack = new Stack<>();
+    Stack<Integer> minStack = new Stack<>();
+
+    public MinStack() {
+    }
+
+    public void push(int val) {
+        stack.push(val);
+
+        if (minStack.isEmpty() ||
+            val <= minStack.peek()) {
+            minStack.push(val);
+        }
+    }
+
+    public void pop() {
+        int removed = stack.pop();
+
+        if (removed == minStack.peek()) {
+            minStack.pop();
+        }
+    }
+
+    public int top() {
+        return stack.peek();
+    }
+
+    public int getMin() {
+        return minStack.peek();
+    }
+}
+```
+
+Example
+
+```
+push(-2)
+push(0)
+push(-3)
+
+getMin() → -3
+pop()
+top()    → 0
+getMin() → -2
+```
+
+Thanglish logic:
+
+Normal stack-la values store pannuvom. `minStack`-la current minimum values store pannuvom.
+
+`pop()` pannumbodhu minimum value remove aana, `minStack`-layum remove pannuvom.
+
+Time: All operations O(1)O(1)O(1) Space: O(n)O(n)O(n)
+
+## 33. Maximum Depth of Binary Tree — LeetCode #104
+
+Easy
+
+DFS + Recursion
+
+Question: Find the maximum depth of a binary tree.
+
+Java answer
+
+Java
+
+```
+class Solution {
+    public int maxDepth(TreeNode root) {
+
+        if (root == null) {
+            return 0;
+        }
+
+        int leftDepth = maxDepth(root.left);
+        int rightDepth = maxDepth(root.right);
+
+        return 1 + Math.max(leftDepth, rightDepth);
+    }
+}
+```
+
+Example
+
+![](data\:image/svg+xml;charset=utf-8,%3Csvg%20font-family%3D%22-apple-system-body%2C%20ui-sans-serif%2C%20-apple-system%2C%20system-ui%2C%20%26quot%3BSegoe%20UI%26quot%3B%2C%20Helvetica%2C%20%26quot%3BApple%20Color%20Emoji%26quot%3B%2C%20Arial%2C%20sans-serif%2C%20%26quot%3BSegoe%20UI%20Emoji%26quot%3B%2C%20%26quot%3BSegoe%20UI%20Symbol%26quot%3B%22%20font-weight%3D%22400%22%20data-d-component%3D%22svg%22%20fill%3D%22currentColor%22%20style%3D%22color%3Argb\(255%2C%20255%2C%20255\)%22%20viewBox%3D%220%200%20280%20150%22%20width%3D%22100%25%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cg%20stroke%3D%22%238A9BAF%22%20stroke-width%3D%221.5%22%20fill%3D%22none%22%3E%3Cpath%20d%3D%22M140%2028%20L85%2067%20M140%2028%20L195%2067%20M195%2080%20L165%20115%20M195%2080%20L225%20115%22%2F%3E%3C%2Fg%3E%3Ccircle%20cx%3D%22140%22%20cy%3D%2222%22%20r%3D%2215%22%20fill%3D%22%23DCEBFF%22%20stroke%3D%22%235584B8%22%2F%3E%3Ctext%20x%3D%22140%22%20y%3D%2226%22%20font-size%3D%2212%22%20fill%3D%22%2317395F%22%20text-anchor%3D%22middle%22%3E3%3C%2Ftext%3E%3Ccircle%20cx%3D%2285%22%20cy%3D%2267%22%20r%3D%2215%22%20fill%3D%22%23DCEBFF%22%20stroke%3D%22%235584B8%22%2F%3E%3Ctext%20x%3D%2285%22%20y%3D%2271%22%20font-size%3D%2212%22%20fill%3D%22%2317395F%22%20text-anchor%3D%22middle%22%3E9%3C%2Ftext%3E%3Ccircle%20cx%3D%22195%22%20cy%3D%2267%22%20r%3D%2215%22%20fill%3D%22%23DCEBFF%22%20stroke%3D%22%235584B8%22%2F%3E%3Ctext%20x%3D%22195%22%20y%3D%2271%22%20font-size%3D%2212%22%20fill%3D%22%2317395F%22%20text-anchor%3D%22middle%22%3E20%3C%2Ftext%3E%3Ccircle%20cx%3D%22165%22%20cy%3D%22115%22%20r%3D%2215%22%20fill%3D%22%23DCEBFF%22%20stroke%3D%22%235584B8%22%2F%3E%3Ctext%20x%3D%22165%22%20y%3D%22119%22%20font-size%3D%2212%22%20fill%3D%22%2317395F%22%20text-anchor%3D%22middle%22%3E15%3C%2Ftext%3E%3Ccircle%20cx%3D%22225%22%20cy%3D%22115%22%20r%3D%2215%22%20fill%3D%22%23DCEBFF%22%20stroke%3D%22%235584B8%22%2F%3E%3Ctext%20x%3D%22225%22%20y%3D%22119%22%20font-size%3D%2212%22%20fill%3D%22%2317395F%22%20text-anchor%3D%22middle%22%3E7%3C%2Ftext%3E%3C%2Fsvg%3E)
+
+Maximum depth = 3 levels
+
+```
+Output: 3
+```
+
+Thanglish logic:
+
+1. Node `null` na depth `0`.
+
+2. Left subtree depth calculate pannuvom.
+
+3. Right subtree depth calculate pannuvom.
+
+4. Rendu-la perusa irukkuradha eduthu `1` add pannuvom.
+
+Formula:
+
+depth=1+max⁡(left,right)\text{depth}=1+\max(\text{left},\text{right})depth=1+max(left,right)
+
+Time: O(n)O(n)O(n) Space: O(h)O(h)O(h), where hhh is the tree height.
+
+## Today's practice tracker
+
+### Day 12 progress
+
+0/3 completed
+
+31. Subsets
+
+Backtracking
+
+32. Min Stack
+
+Stack
+
+33. Maximum Depth of Binary Tree
+
+DFS
+
+Coach's advice: Code-a paathu type pannradhu mattum practice illa. First 15 minutes solution paakama try pannu. Stuck aana, pattern and logic mattum paaru; full code-ai immediately copy pannadha.
