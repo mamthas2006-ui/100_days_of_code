@@ -1,0 +1,242 @@
+Bubu! 🔥 Dudu’s Daily LeetCode Challenge — Day 13 is ready. Today we’ll practice 3 new problems for placement preparation, with Java solutions and Thanglish explanations.
+
+# Day 13 — 3 LeetCode Problems
+
+[leetcode 226. Invert Binary Tree - smddddddddddd - Medium](https://images.openai.com/static-rsc-4/9VdyQxyayJawoik4IZRSIIlDjoniK4iO5rj-F-yGjw2Wb6cZaMGVBMrBcHSbWSL-QIJlo2X24M2G0VvlvvrDc7ehXWRfffq4egbfaiDJ-FmzbAsWac18DtakJ1_JYRXYfkWFgpFcaqV1XeZf0Boun3GjFPu9243h0T8DYY1jgtE?purpose=inline)
+
+### 34. Invert Binary Tree
+
+LeetCode #226 · Easy · Tree / DFS
+
+Swap the left and right child of every node.
+
+Pattern: Recursion
+
+[Solving Leetcode 543 ‘Diameter of a Binary Tree’: Nebulous numbers | by Adam Pena | Medium](https://images.openai.com/static-rsc-4/rtMRKwujFPNcW8OF9lw0puDB6K-sXEvmzPC9vD8HFfW6kVUAl_GwaJ33TSR6nbJj4L90BygEyJA7r6BPVZGdbzY3HVdbZQGdGldBemn02dbCGIe3mxcM5MhCPWHoZAVd7pKLCAw5hzXCLRTxqi4Iz4dQ-HcwtkHDLKZPIz13xho?purpose=inline)
+
+### 35. Diameter of Binary Tree
+
+LeetCode #543 · Easy · Tree / DFS
+
+Find the longest path between any two nodes.
+
+Pattern: Tree height + DFS
+
+[Rotten Oranges - TUF+](https://images.openai.com/static-rsc-4/q42DKLqGhpG-2eCj81xd1hgTQaNxpDPDUdBUYHXnKBLSGMtBnTiAqMO8R0Dq6Qd-My3i_bFuuPM1szcVgRB-QeJIJE9RTRFARysgqqXgr7MqtYNS939c9LlptKwM8qZeJi7HJl9TASvWrwh-jS1BXQ1uwztyNAE2K6JGC6KgZm4?purpose=inline)
+
+### 36. Rotting Oranges
+
+LeetCode #994 · Medium · Grid / BFS
+
+Find the minimum minutes required for all reachable fresh oranges to rot.
+
+Pattern: Multi-source BFS
+
+## 1. Invert Binary Tree — Java
+
+Example
+
+Input: `[4,2,7,1,3,6,9]`
+
+Output: `[4,7,2,9,6,3,1]`
+
+### Code
+
+```
+class Solution {
+    public TreeNode invertTree(TreeNode root) {
+        if (root == null) {
+            return null;
+        }
+
+        TreeNode temp = root.left;
+        root.left = root.right;
+        root.right = temp;
+
+        invertTree(root.left);
+        invertTree(root.right);
+
+        return root;
+    }
+}
+```
+
+### Thanglish explanation
+
+1. `root == null` na node illa; so `null` return pannuvom.
+2. `temp` use panni left child-a temporary-ah save pannuvom.
+3. Left and right children-a swap pannuvom.
+4. Left subtree, right subtree rendulayum recursively same operation pannuvom.
+5. Finally, modified root-a return pannuvom.
+
+Complexity
+
+- Time: \\(O(n)\\) — every node visit pannuvom.
+- Space: \\(O(h)\\) — recursion stack; `h` is tree height.
+
+## 2. Diameter of Binary Tree — Java
+
+Example
+
+```
+       1
+      / \
+     2   3
+    / \
+   4   5
+```
+
+Output: `3`
+
+Longest path: `4 → 2 → 1 → 3` or `5 → 2 → 1 → 3`? The longest path is `4 → 2 → 1 → 3`, which contains 3 edges.
+
+### Code
+
+```
+class Solution {
+    int diameter = 0;
+
+    public int diameterOfBinaryTree(TreeNode root) {
+        height(root);
+        return diameter;
+    }
+
+    private int height(TreeNode root) {
+        if (root == null) {
+            return 0;
+        }
+
+        int leftHeight = height(root.left);
+        int rightHeight = height(root.right);
+
+        diameter = Math.max(
+            diameter, leftHeight + rightHeight
+        );
+
+        return 1 + Math.max(leftHeight, rightHeight);
+    }
+}
+```
+
+### Thanglish explanation
+
+- `height()` left subtree-oda height-um right subtree-oda height-um calculate pannum.
+- `leftHeight + rightHeight` current node vazhiya pogura longest path-oda edge count.
+- `Math.max()` use panni maximum diameter-a update pannuvom.
+- `height()` current node-oda height-a return pannum.
+- Ella nodes-um process pannina apram `diameter` answer-a return pannuvom.
+
+Important: Diameter-na longest path-la irukkura edges count, nodes count illa.
+
+Complexity
+
+- Time: \\(O(n)\\)
+- Space: \\(O(h)\\) for recursion stack.
+
+## 3. Rotting Oranges — Java
+
+Rules
+
+- `0` = Empty cell
+- `1` = Fresh orange
+- `2` = Rotten orange
+
+Every minute, a rotten orange makes its adjacent fresh oranges rotten in the four directions.
+
+Example
+
+```
+Input:
+[[2,1,1],
+ [1,1,0],
+ [0,1,1]]
+
+Output: 4
+```
+
+### Code
+
+```
+import java.util.*;
+
+class Solution {
+    public int orangesRotting(int[][] grid) {
+        int rows = grid.length;
+        int cols = grid[0].length;
+
+        Queue<int[]> queue = new LinkedList<>();
+        int fresh = 0;
+        int minutes = 0;
+
+        for (int r = 0; r < rows; r++) {
+            for (int c = 0; c < cols; c++) {
+                if (grid[r][c] == 2) {
+                    queue.offer(new int[]{r, c});
+                } else if (grid[r][c] == 1) {
+                    fresh++;
+                }
+            }
+        }
+
+        int[][] directions = {
+            {-1, 0}, {1, 0}, {0, -1}, {0, 1}
+        };
+
+        while (!queue.isEmpty() && fresh > 0) {
+            int size = queue.size();
+
+            for (int i = 0; i < size; i++) {
+                int[] cell = queue.poll();
+                int r = cell[0];
+                int c = cell[1];
+
+                for (int[] d : directions) {
+                    int nr = r + d[0];
+                    int nc = c + d[1];
+
+                    if (nr >= 0 && nr < rows &&
+                        nc >= 0 && nc < cols &&
+                        grid[nr][nc] == 1) {
+
+                        grid[nr][nc] = 2;
+                        fresh--;
+                        queue.offer(new int[]{nr, nc});
+                    }
+                }
+            }
+
+            minutes++;
+        }
+
+        return fresh == 0 ? minutes : -1;
+    }
+}
+```
+
+### Thanglish explanation
+
+1. First grid scan panni existing rotten oranges-a queue-la add pannuvom.
+2. Fresh oranges count-a `fresh` variable-la store pannuvom.
+3. Queue-la irukkura oranges-ai level by level process pannuvom. One level = one minute.
+4. Four directions-la adjacent fresh orange irundha, adha rotten-a maathi queue-la add pannuvom.
+5. `fresh == 0` aana ellaa oranges-um rot aagiduchu; minutes return pannuvom.
+6. Fresh oranges remaining irundha, sila oranges reach panna mudiyala. Appo `-1` return pannuvom.
+
+Complexity
+
+- Time: \\(O(rows \times cols)\\)
+- Space: \\(O(rows \times cols)\\) for the queue in the worst case.
+
+## Today's practice checklist
+
+Day 13 Progress
+
+## 0/3
+
+34\. Invert Binary Tree
+
+35\. Diameter of Binary Tree
+
+36\. Rotting Oranges
+
+Dudu’s interview tip: First two problems-la recursion and tree height concepts strong panniko. Third problem-la BFS queue + level-by-level processing purinjikitta, many grid and shortest-path questions easier aagum.
