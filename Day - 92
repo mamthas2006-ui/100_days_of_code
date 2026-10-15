@@ -1,0 +1,85 @@
+1. Lowest Common Ancestor — LeetCode #236
+Example
+        3
+       / \
+      5   1
+     / \ / \
+    6  2 0  8
+      / \
+     7   4
+
+p = 5, q = 4
+Output = 5
+
+
+Node 5 is an ancestor of node 4, so the lowest common ancestor is 5.
+Java solution
+class Solution {
+    public TreeNode lowestCommonAncestor(
+            TreeNode root, TreeNode p, TreeNode q) {
+
+        if (root == null || root == p || root == q) {
+            return root;
+        }
+
+        TreeNode left = lowestCommonAncestor(root.left, p, q);
+        TreeNode right = lowestCommonAncestor(root.right, p, q);
+
+        if (left != null && right != null) {
+            return root;
+        }
+
+        return left != null ? left : right;
+    }
+}
+
+
+Thanglish explanation
+1. root == null na node illa; p illa q-va reach pannalum andha node-ai return pannuvom.
+2. Left subtree-la p or q irukka nu search pannuvom.
+3. Right subtree-layum search pannuvom.
+4. Left and right rendu side-layum result kidaicha, current root dhaan LCA.
+5. Oru side-la mattum result irundha, andha result-ai return pannuvom.
+Complexity: Time \(O(n)\); recursion space \(O(h)\), where h is the tree height.
+
+2. Permutations — LeetCode #46
+Example
+Input: [1,2,3]
+Output:
+[[1,2,3], [1,3,2],
+ [2,1,3], [2,3,1],
+ [3,1,2], [3,2,1]]
+
+
+Three distinct numbers have \(3! = 6\) permutations.
+Java solution
+import java.util.*;
+
+class Solution {
+    public List<List<Integer>> permute(int[] nums) {
+        List<List<Integer>> result = new ArrayList<>();
+        backtrack(nums, new ArrayList<>(), result);
+        return result;
+    }
+
+    private void backtrack(
+            int[] nums,
+            List<Integer> current,
+            List<List<Integer>> result) {
+
+        if (current.size() == nums.length) {
+            result.add(new ArrayList<>(current));
+            return;
+        }
+
+        for (int num : nums) {
+            if (current.contains(num)) {
+                continue;
+            }
+
+            current.add(num);
+            backtrack(nums, current, result);
+            current.remove(current.size() - 1);
+        }
+    }
+}
